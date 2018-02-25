@@ -1,5 +1,6 @@
-package com.rockwellstudios.mychat.common
+package com.rockwellstudios.mychat.base
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.rockwellstudios.mychat.R
@@ -7,20 +8,22 @@ import com.rockwellstudios.mychat.R
 /**
  * Created by Andrew on 26.12.2017.
  */
-open class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
 
     fun showFragment(fragmentToShow: Fragment) {
         val fragment = supportFragmentManager.findFragmentByTag(fragmentToShow.tag)
         if (fragment == null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, fragmentToShow, fragmentToShow.tag)
+                    .replace(getFragmentContainer(), fragmentToShow, fragmentToShow.tag)
                     .addToBackStack(fragmentToShow.tag)
                     .commitAllowingStateLoss()
         } else {
             supportFragmentManager.popBackStack(fragment.tag, 0)
         }
     }
+
+    abstract fun getFragmentContainer() : Int
 
 
     override fun onBackPressed() {

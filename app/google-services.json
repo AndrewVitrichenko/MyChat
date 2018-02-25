@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "761967681031",
+    "firebase_url": "https://mychat-a1e22.firebaseio.com",
+    "project_id": "mychat-a1e22",
+    "storage_bucket": "mychat-a1e22.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:761967681031:android:ef6993fc23aee0d1",
+        "android_client_info": {
+          "package_name": "com.rockwellstudios.mychat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "761967681031-54fdjhtavkq9dglei5ntq49q7mgt5kvm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rockwellstudios.mychat",
+            "certificate_hash": "b057ccfa4d3cf0c90df063735dd481f1326aaa62"
+          }
+        },
+        {
+          "client_id": "761967681031-gm0lg5ki2eupa5ts264hiagmp435gt64.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6PVX-3_luExQcf-H0gRrelPDYebfo-B4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "761967681031-gm0lg5ki2eupa5ts264hiagmp435gt64.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
