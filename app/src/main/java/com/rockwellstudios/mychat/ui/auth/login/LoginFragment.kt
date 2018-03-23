@@ -1,4 +1,4 @@
-package com.rockwellstudios.mychat.ui.login
+package com.rockwellstudios.mychat.ui.auth.login
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,6 +12,9 @@ import com.rockwellstudios.mychat.R
  */
 class LoginFragment : Fragment() {
 
+    companion object {
+        fun newInstance() = LoginFragment()
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_login,container,false)
