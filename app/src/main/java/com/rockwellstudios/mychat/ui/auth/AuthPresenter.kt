@@ -15,9 +15,9 @@ class AuthPresenter constructor(private val view : AuthContract.View,
         val userId = sharedPreferences.getString(USER_ID,"")
         userId?.let {
             if (it.isEmpty()){
-                view.showLoginScreen()
+                view?.showLoginScreen()
             } else{
-                view.showMainScreen()
+                view?.showMainScreen()
             }
         }
     }
