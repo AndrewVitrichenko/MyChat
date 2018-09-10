@@ -2,17 +2,20 @@ package com.rockwellstudios.mychat.ui.auth
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.rockwellstudios.mychat.utils.SharedPreferencesDataSource
+import javax.inject.Inject
 
 /**
  * Created by user on 23.03.18.
  */
-class AuthPresenter constructor(private val view : AuthContract.View,
-                                private val sharedPreferences: SharedPreferences) : AuthContract.Presenter {
+class AuthPresenter @Inject constructor(val view : AuthContract.View,
+                                            val sharedPreferencesDataSource: SharedPreferencesDataSource)
+    : AuthContract.Presenter {
 
     private val USER_ID = "user_id"
 
-    override fun subscribe() {
-        val userId = sharedPreferences.getString(USER_ID,"")
+    override fun attach() {
+        val userId = sharedPreferencesDataSource.getString(USER_ID,"")
         userId?.let {
             if (it.isEmpty()){
                 view?.showLoginScreen()
@@ -20,5 +23,9 @@ class AuthPresenter constructor(private val view : AuthContract.View,
                 view?.showMainScreen()
             }
         }
+    }
+
+    override fun detach() {
+
     }
 }

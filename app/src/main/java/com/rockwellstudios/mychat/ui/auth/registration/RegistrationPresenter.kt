@@ -2,14 +2,17 @@ package com.rockwellstudios.mychat.ui.auth.registration
 
 import android.content.SharedPreferences
 import com.rockwellstudios.mychat.entity.AuthEntities
+import com.rockwellstudios.mychat.utils.SharedPreferencesDataSource
 import io.socket.client.Socket
 import org.json.JSONObject
+import javax.inject.Inject
 
 /**
  * Created by user on 23.03.18.
  */
-class RegistrationPresenter constructor(private val view: RegistrationContract.View,
-                                        private val sharedPreferences: SharedPreferences): RegistrationContract.Presenter {
+class RegistrationPresenter @Inject constructor( val view: RegistrationContract.View,
+                                         val sharedPreferencesDataSource: SharedPreferencesDataSource): RegistrationContract.Presenter {
+
     override fun onSignInButtonClick(authBody: AuthEntities.AuthBody) {
         val jsonObject = JSONObject()
         jsonObject.put("email",authBody.email)
@@ -18,8 +21,12 @@ class RegistrationPresenter constructor(private val view: RegistrationContract.V
     }
 
 
-    override fun subscribe() {
+    override fun attach() {
 
+    }
+
+    override fun detach() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 

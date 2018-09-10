@@ -3,7 +3,6 @@ package com.rockwellstudios.mychat.di.module
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import com.rockwellstudios.mychat.MainApplication
 import com.rockwellstudios.mychat.utils.PreferenceDataSource
 import com.rockwellstudios.mychat.utils.SharedPreferencesDataSource
 import dagger.Binds
@@ -11,14 +10,16 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-/**
- * Created by user on 23.03.18.
- */
 @Module
-abstract class AppModule {
+class UtilModule {
 
     @Singleton
-    @Binds
-    abstract fun bindContext(application: MainApplication): Context
+    @Provides
+    fun provideSharedPreferences(context: Context): SharedPreferences
+            = PreferenceManager.getDefaultSharedPreferences(context)
 
+    @Singleton
+    @Provides
+    fun provideSharedPreferencesDataSource(sharedPreferences: SharedPreferences): PreferenceDataSource
+            = SharedPreferencesDataSource(sharedPreferences)
 }

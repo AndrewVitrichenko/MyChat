@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.rockwellstudios.mychat.R
-import com.rockwellstudios.mychat.common.IP_LOCAL_HOST
+import com.rockwellstudios.mychat.base.BaseFragment
 import com.rockwellstudios.mychat.entity.AuthEntities
 import io.socket.client.IO
 import io.socket.client.Socket
@@ -18,21 +18,21 @@ import javax.inject.Inject
 /**
  * Created by user on 23.03.18.
  */
-class RegistrationFragment : Fragment(), RegistrationContract.View {
+class RegistrationFragment : BaseFragment(), RegistrationContract.View {
 
     private lateinit var socket: Socket
 
     @Inject
-    private lateinit var presenter: RegistrationContract.Presenter
+    lateinit var presenter: RegistrationContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        try {
-            socket = IO.socket(IP_LOCAL_HOST)
-            socket.connect()
-        } catch (e: Exception) {
-
-        }
+//        try {
+//            socket = IO.socket(IP_LOCAL_HOST)
+//            socket.connect()
+//        } catch (e: Exception) {
+//
+//        }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {

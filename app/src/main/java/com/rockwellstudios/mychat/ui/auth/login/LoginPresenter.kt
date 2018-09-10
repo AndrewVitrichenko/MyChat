@@ -8,12 +8,17 @@ import com.rockwellstudios.mychat.entity.AuthEntities
 class LoginPresenter : LoginContract.Presenter {
 
 
+    override fun detach() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+
     override fun onSignInButtonClick(authBody: AuthEntities.AuthBody) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 
-    override fun subscribe() {
+    override fun attach() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

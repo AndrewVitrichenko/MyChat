@@ -5,5 +5,7 @@ package com.rockwellstudios.mychat.base
  */
 interface BasePresenter {
 
-    fun subscribe()
+    fun attach()
+
+    fun detach()
 }

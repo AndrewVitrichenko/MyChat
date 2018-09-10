@@ -16,12 +16,8 @@ import dagger.Provides
 abstract class AuthModule {
 
     @Binds
-    abstract fun bindView(authActivity: AuthActivity) : AuthContract.View
+    abstract fun bindView(authActivity: AuthActivity): AuthContract.View
 
-    @Provides
-    fun provideAuthPresenter(view: AuthContract.View,
-                             sharedPreferences: SharedPreferences): AuthContract.Presenter {
-        return AuthPresenter(view, sharedPreferences)
-    }
-
+    @Binds
+    abstract fun bindPresenter(authPresenter: AuthPresenter): AuthContract.Presenter
 }

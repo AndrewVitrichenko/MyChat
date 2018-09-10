@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rockwellstudios.mychat.R
+import com.rockwellstudios.mychat.base.BaseFragment
 import com.rockwellstudios.mychat.entity.AuthEntities
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
@@ -13,10 +14,10 @@ import javax.inject.Inject
 /**
  * Created by Andrew on 25.02.2018.
  */
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment() {
 
     @Inject
-    private lateinit var presenter: LoginContract.Presenter
+    lateinit var presenter: LoginContract.Presenter
 
     companion object {
         fun newInstance() = LoginFragment()

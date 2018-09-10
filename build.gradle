@@ -2,11 +2,11 @@
 
 buildscript {
 
-    ext.kotlin_version = '1.2.30'
+    ext.kotlin_version = '1.2.61'
     ext.butterknife_version = '8.8.1'
     ext.glide_version = '4.3.1'
-    ext.dagger_version = '2.12'
-    ext.firebase_version = '12.0.0'
+    ext.dagger_version = '2.15'
+    ext.firebase_version = '16.0.1'
 
     repositories {
         google()
@@ -14,8 +14,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath 'com.google.gms:google-services:3.2.0'
+        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.google.gms:google-services:4.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.jakewharton:butterknife-gradle-plugin:$butterknife_version"
 
