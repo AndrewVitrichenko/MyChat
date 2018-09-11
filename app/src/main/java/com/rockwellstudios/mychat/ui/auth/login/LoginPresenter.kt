@@ -1,11 +1,12 @@
 package com.rockwellstudios.mychat.ui.auth.login
 
 import com.rockwellstudios.mychat.entity.AuthEntities
+import javax.inject.Inject
 
 /**
  * Created by user on 23.03.18.
  */
-class LoginPresenter : LoginContract.Presenter {
+class LoginPresenter @Inject constructor(): LoginContract.Presenter {
 
 
     override fun detach() {

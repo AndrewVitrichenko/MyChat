@@ -5,7 +5,7 @@ import android.os.Bundle
 
 import com.rockwellstudios.mychat.R
 import com.rockwellstudios.mychat.base.BaseActivity
-import com.rockwellstudios.mychat.common.IP_LOCAL_HOST_HOME_WINDOWS
+import com.rockwellstudios.mychat.common.IP_LOCAL_HOST
 import com.rockwellstudios.mychat.ui.auth.login.LoginFragment
 import com.rockwellstudios.mychat.ui.main.MainActivity
 
@@ -25,7 +25,7 @@ class AuthActivity : BaseActivity(), AuthContract.View {
     @Inject
     lateinit var presenter: AuthContract.Presenter
 
-    override fun getFragmentContainer() = R.id.activity_auth_fragment_container
+    override fun getFragmentContainer() = R.id.activity_main_fragment_container
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

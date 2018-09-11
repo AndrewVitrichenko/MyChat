@@ -14,7 +14,15 @@ import javax.inject.Inject
 /**
  * Created by Andrew on 25.02.2018.
  */
-class LoginFragment : BaseFragment() {
+class LoginFragment : BaseFragment(), LoginContract.View {
+
+    override fun showLoading(loading: Boolean) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showMessage(message: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     @Inject
     lateinit var presenter: LoginContract.Presenter
