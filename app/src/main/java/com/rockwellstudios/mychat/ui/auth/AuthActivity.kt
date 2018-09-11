@@ -31,15 +31,6 @@ class AuthActivity : BaseActivity(), AuthContract.View {
         presenter.attach()
     }
 
-
-    override fun showLoading(loading: Boolean) {
-//        not implemented
-    }
-
-    override fun showMessage(message: String) {
-//        not implemented
-    }
-
     override fun showLoginScreen() {
         showFragment(LoginFragment.newInstance(),true)
     }

@@ -4,6 +4,8 @@ import android.content.SharedPreferences
 import com.rockwellstudios.mychat.ui.auth.AuthActivity
 import com.rockwellstudios.mychat.ui.auth.AuthContract
 import com.rockwellstudios.mychat.ui.auth.AuthPresenter
+import com.rockwellstudios.mychat.ui.auth.data.AuthDataSource
+import com.rockwellstudios.mychat.ui.auth.data.AuthRemoteDataSource
 import com.rockwellstudios.mychat.ui.auth.login.LoginContract
 import com.rockwellstudios.mychat.ui.auth.login.LoginFragment
 import com.rockwellstudios.mychat.ui.auth.login.LoginPresenter
@@ -20,6 +22,9 @@ import dagger.Provides
 
 @Module
 abstract class AuthModule {
+
+    @Binds
+    abstract fun bindDataSource(authRemoteDataSource: AuthRemoteDataSource) : AuthDataSource
 
     @Binds
     abstract fun bindAuthView(authActivity: AuthActivity): AuthContract.View

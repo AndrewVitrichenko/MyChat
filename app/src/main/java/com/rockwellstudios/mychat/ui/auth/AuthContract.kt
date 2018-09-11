@@ -8,7 +8,7 @@ import com.rockwellstudios.mychat.base.BaseView
  */
 interface AuthContract {
 
-    interface View : BaseView {
+    interface View {
         fun showLoginScreen()
 
         fun showMainScreen()

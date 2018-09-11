@@ -58,7 +58,7 @@ class LoginFragment : BaseFragment(), LoginContract.View {
     override fun showSignUpScreen() {
         activity?.let {
             val authActivity : AuthActivity = it as AuthActivity
-            authActivity.showFragment(RegistrationFragment.newInstance(),false)
+            authActivity.showFragment(RegistrationFragment.newInstance(),true)
         }
     }
 

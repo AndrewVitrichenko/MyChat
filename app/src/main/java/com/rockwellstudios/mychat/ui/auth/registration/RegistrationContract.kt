@@ -3,6 +3,7 @@ package com.rockwellstudios.mychat.ui.auth.registration
 import com.rockwellstudios.mychat.base.BasePresenter
 import com.rockwellstudios.mychat.base.BaseView
 import com.rockwellstudios.mychat.entity.AuthEntities
+import io.reactivex.Observable
 import org.json.JSONObject
 
 /**
@@ -15,12 +16,18 @@ interface RegistrationContract {
     }
 
     interface View : BaseView{
-        fun sendAuthRequest(jsonObject: JSONObject)
+
+        fun emailInputStream(): Observable<String>
+
+        fun passwordInputStream(): Observable<String>
+
+        fun signUpButtonClick(): Observable<Any>
+
+        fun moveToCoreScreen()
 
     }
 
     interface Presenter : BasePresenter{
-        fun onSignInButtonClick(authBody: AuthEntities.AuthBody)
 
     }
 }

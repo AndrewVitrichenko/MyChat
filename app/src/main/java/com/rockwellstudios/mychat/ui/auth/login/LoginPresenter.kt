@@ -22,15 +22,17 @@ class LoginPresenter @Inject constructor(val view: LoginContract.View,
     override fun attach() {
         Observables.combineLatest(
                 view.emailInputStream(),
-                view.passwordInputStream())
-        { email, password -> AuthEntities.AuthBody(email, password) }
+                view.passwordInputStream()
+        ) { email, password -> AuthEntities.AuthBody(email, password) }
                 .sample(view.signInButtonClick())
                 .doOnNext { view.showLoading(true) }
                 .doOnNext { authBody ->
                     authBody.apply {
                         if (email.trim().isEmpty() || password.trim().isEmpty()) {
-                            view.showLoading(false)
-                            view.showMessage(resourceUtil.getString(R.string.error_incorrect_data))
+                            view.apply {
+                                showLoading(false)
+                                showMessage(resourceUtil.getString(R.string.error_incorrect_data))
+                            }
                         }
                     }
                 }
@@ -38,8 +40,10 @@ class LoginPresenter @Inject constructor(val view: LoginContract.View,
                 .doOnSubscribe { compositeDisposable.add(it) }
 //                .flatMap{ authBody ->  }
                 .subscribe({
-                    view.showLoading(false)
-                    view.moveToCoreScreen()
+                    view.apply {
+                        showLoading(false)
+                        moveToCoreScreen()
+                    }
                 }, { error ->
                             view.showLoading(false)
                             Log.e("TAG", "{$error.message}")
