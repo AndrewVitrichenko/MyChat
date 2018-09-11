@@ -10,6 +10,7 @@ interface AuthContract {
 
     interface View : BaseView {
         fun showLoginScreen()
+
         fun showMainScreen()
     }
 

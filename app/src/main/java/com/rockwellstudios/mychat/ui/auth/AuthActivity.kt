@@ -20,8 +20,6 @@ import javax.inject.Inject
  */
 class AuthActivity : BaseActivity(), AuthContract.View {
 
-    private var mSocket: Socket? = null
-
     @Inject
     lateinit var presenter: AuthContract.Presenter
 
@@ -43,17 +41,17 @@ class AuthActivity : BaseActivity(), AuthContract.View {
     }
 
     override fun showLoginScreen() {
-        showFragment(LoginFragment.newInstance())
+        showFragment(LoginFragment.newInstance(),true)
     }
 
     override fun showMainScreen() {
         val coreScreen = Intent(this, MainActivity::class.java)
         startActivity(coreScreen)
+        finish()
     }
 
 
     override fun onDestroy() {
-        mSocket?.disconnect()
         presenter.detach()
         super.onDestroy()
     }

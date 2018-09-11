@@ -25,21 +25,19 @@ class RegistrationFragment : BaseFragment(), RegistrationContract.View {
     @Inject
     lateinit var presenter: RegistrationContract.Presenter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        try {
-//            socket = IO.socket(IP_LOCAL_HOST)
-//            socket.connect()
-//        } catch (e: Exception) {
-//
-//        }
+    companion object {
+        fun newInstance() = RegistrationFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_login, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         btnSignIn.setOnClickListener({
             if (!editTextEmail.text.isEmpty() && !editTextPassword.text.isEmpty()) {
@@ -61,9 +59,6 @@ class RegistrationFragment : BaseFragment(), RegistrationContract.View {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun showMessage(message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
 
 }
