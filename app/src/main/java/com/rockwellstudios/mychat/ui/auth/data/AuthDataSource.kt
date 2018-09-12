@@ -9,7 +9,7 @@ interface AuthDataSource {
 
     fun login(authBody: AuthEntities.AuthBody)
 
-    fun listenEvents(authSubject: PublishSubject<String>)
+    fun listenEvents()
 
     fun stopEventListening()
 

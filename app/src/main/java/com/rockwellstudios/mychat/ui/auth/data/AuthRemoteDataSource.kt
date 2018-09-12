@@ -1,5 +1,6 @@
 package com.rockwellstudios.mychat.ui.auth.data
 
+import com.google.firebase.auth.FirebaseAuth
 import com.rockwellstudios.mychat.entity.AuthEntities
 import com.rockwellstudios.mychat.utils.SocketConnector
 import io.reactivex.subjects.PublishSubject
@@ -7,7 +8,8 @@ import io.socket.emitter.Emitter
 import org.json.JSONObject
 import javax.inject.Inject
 
-class AuthRemoteDataSource @Inject constructor(val socketConnector: SocketConnector): AuthDataSource {
+class AuthRemoteDataSource @Inject constructor(val socketConnector: SocketConnector,
+                                               val authSubject: PublishSubject<String>): AuthDataSource {
 
     var listener: Emitter.Listener? = null
 
@@ -23,18 +25,22 @@ class AuthRemoteDataSource @Inject constructor(val socketConnector: SocketConnec
     }
 
     override fun login(authBody: AuthEntities.AuthBody){
-        try {
-            val jsonObject = JSONObject()
-            jsonObject.put("email",authBody.email)
-            jsonObject.put("password",authBody.password)
-            socketConnector.initConnection()?.emit("userData", jsonObject)
-        } catch (e: Exception) {
-        }
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(authBody.email,authBody.password)
+                .addOnCompleteListener { task ->
+
+                }
+//        try {
+//            val jsonObject = JSONObject()
+//            jsonObject.put("email",authBody.email)
+//            jsonObject.put("password",authBody.password)
+//            socketConnector.initConnection()?.emit("userData", jsonObject)
+//        } catch (e: Exception) {
+//        }
     }
 
 
-    override fun listenEvents(authSubject: PublishSubject<String>){
-        listener = Emitter.Listener { args ->
+    override fun listenEvents(){
+        socketConnector.initConnection()?.on("message") { args ->
             val jsonObject: JSONObject = args[0] as JSONObject
             try {
                 val messageObject : JSONObject = jsonObject.getJSONObject("message")
@@ -44,7 +50,6 @@ class AuthRemoteDataSource @Inject constructor(val socketConnector: SocketConnec
                 authSubject.onNext(e.message.toString())
             }
         }
-        socketConnector.initConnection()?.on("message",listener)
     }
 
     override fun stopEventListening() {
