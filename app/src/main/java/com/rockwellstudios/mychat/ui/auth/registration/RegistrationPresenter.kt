@@ -49,20 +49,12 @@ class RegistrationPresenter @Inject constructor(val view: RegistrationContract.V
         authSubject.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe{compositeDisposable.add(it)}
+                .doOnNext { view.showLoading(false) }
                 .subscribe {message ->
                     when (message){
-                        "Success" -> {
-                            view.apply {
-                                showLoading(false)
-                                moveToLogin()
-                            }
-                        }
-                        else ->{
-                            view.apply {
-                                showLoading(false)
-                                showMessage(message)
-                            }
-                        }
+                        "Success" -> view.moveToLogin()
+                        else -> view.showMessage(message)
+
                     }
                 }
 

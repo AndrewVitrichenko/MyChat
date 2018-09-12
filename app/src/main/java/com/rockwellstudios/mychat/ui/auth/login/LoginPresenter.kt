@@ -18,10 +18,9 @@ class LoginPresenter @Inject constructor(val view: LoginContract.View,
 
     override fun attach() {
         Observables.combineLatest(
-                view.userNameInputStream(),
                 view.emailInputStream(),
                 view.passwordInputStream()
-        ) { userName, email, password -> AuthEntities.AuthBody(userName,email, password) }
+        ) {email, password -> AuthEntities.AuthBody("",email, password) }
                 .sample(view.signInButtonClick())
                 .doOnNext { view.showLoading(true) }
                 .doOnNext { authBody ->

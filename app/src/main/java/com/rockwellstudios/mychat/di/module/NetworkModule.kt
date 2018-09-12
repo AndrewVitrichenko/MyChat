@@ -11,10 +11,10 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideSocketConnector() : SocketConnector = SocketConnector()
+    fun provideSocketConnector() = SocketConnector()
 
 
     @Provides
     @Singleton
-    fun providePublishSubject(): PublishSubject<String> = PublishSubject.create()
+    fun providePublishSubject() = PublishSubject.create<String>()
 }

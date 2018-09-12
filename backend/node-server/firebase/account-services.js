@@ -12,8 +12,54 @@ var userAccountRequests = (io) => {
 
     detectDisconnection(socket,io);
     registerUser(socket,io);
+    logUserIn(socket,io);
   });
 };
+
+
+function logUserIn(socket,io){
+  socket.on('userInfo',(data)=>{
+    admin.auth().getUserByEmail(data.email)
+    .then((userRecord)=>{
+      var db = admin.database();
+      var ref = db.ref('users');
+      var userRef = ref.child(encodeEmail(data.email));
+
+      userRef.once('value',(snapshot) =>{
+        var additionalClaims ={
+          email:data.email
+        };
+
+        admin.auth().createCustomToken(userRecord.uidInternal, additionalClaims)
+        .then((customToken) =>{
+          Object.keys(io.sockets.sockets).forEach((id) =>{
+            if (id == socket.id) {
+              var token = {
+                authToken:customToken,
+                email:data.email,
+                userPicture:shapshot.val().userPicture,
+                userName:shapshot.val().userName
+              }
+              io.to(id).emit('token',{token});
+            }
+          });
+        }).catch((error) =>{
+          Object.keys(io.sockets.sockets).forEach((id) =>{
+            if (id == socket.id) {
+              var token = {
+                authToken:error.message,
+                email:'error',
+                userPicture:'error',
+                userName:'error'
+              }
+              io.to(id).emit('token',{token});
+            }
+          });
+        });
+      });
+    });
+  });
+}
 
 function registerUser(socket,io){
   socket.on('userData', (data)=>{

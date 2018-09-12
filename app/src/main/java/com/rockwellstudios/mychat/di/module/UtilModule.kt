@@ -26,8 +26,8 @@ class UtilModule {
 
     @Singleton
     @Provides
-    fun provideResourceUtil(context: Context) : ResourceUtil = ResourceUtil(context)
+    fun provideResourceUtil(context: Context) = ResourceUtil(context)
 
     @Provides
-    fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()
+    fun provideCompositeDisposable() = CompositeDisposable()
 }

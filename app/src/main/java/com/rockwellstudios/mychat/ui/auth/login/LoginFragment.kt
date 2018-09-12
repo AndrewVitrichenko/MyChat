@@ -27,6 +27,7 @@ class LoginFragment : BaseAuthFragment(), LoginContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        editTextUserName.visibility = View.GONE
         presenter.attach()
     }
 
