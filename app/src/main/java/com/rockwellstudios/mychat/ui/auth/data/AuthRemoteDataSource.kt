@@ -1,77 +1,57 @@
 package com.rockwellstudios.mychat.ui.auth.data
 
-import com.rockwellstudios.mychat.common.IP_LOCAL_HOST
 import com.rockwellstudios.mychat.entity.AuthEntities
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.functions.Action
-import io.socket.client.IO
-import io.socket.client.Socket
+import com.rockwellstudios.mychat.utils.SocketConnector
+import io.reactivex.subjects.PublishSubject
 import io.socket.emitter.Emitter
-import org.json.JSONException
-import java.net.URISyntaxException
+import org.json.JSONObject
+import javax.inject.Inject
 
-class AuthRemoteDataSource : AuthDataSource {
+class AuthRemoteDataSource @Inject constructor(val socketConnector: SocketConnector): AuthDataSource {
 
-    private var mSocket: Socket? = null
+    var listener: Emitter.Listener? = null
 
-    init {
-//        mSocket =
-//                try {
-//                    IO.socket(IP_LOCAL_HOST)
-//                } catch (e: URISyntaxException) {
-//                    null
-//                }
-//        mSocket?.connect()
-//        mSocket.let { it ->
-//            it?.on(Socket.EVENT_CONNECT) {
-//                connected = true
-//            }
-//            it?.on(Socket.EVENT_CONNECT_ERROR) {
-//                connected = false
-//            }
-//            it?.on(Socket.EVENT_DISCONNECT) {
-//                connected = false
-//            }
-//        }
-    }
-
-    override fun initConnection() {
-        mSocket =
-                try {
-                    IO.socket(IP_LOCAL_HOST)
-                } catch (e: URISyntaxException) {
-                    null
-                }
-        mSocket?.connect()
-    }
-
-    override fun registerUser(authBody: AuthEntities.AuthBody): Completable {
-        return Completable.fromAction {
-            try {
-                mSocket?.emit("userData", authBody)
-                Completable.complete()
-            } catch (e: Exception) {
-                Completable.error(e)
-            }
+    override fun registerUser(authBody: AuthEntities.AuthBody){
+        try {
+            val jsonObject = JSONObject()
+            jsonObject.put("userName",authBody.userName)
+            jsonObject.put("email",authBody.email)
+            jsonObject.put("password",authBody.password)
+            socketConnector.initConnection()?.emit("userData", jsonObject)
+        } catch (e: Exception) {
         }
     }
 
-    override fun login(authBody: AuthEntities.AuthBody): Completable {
-        return Completable.fromAction {
-            try {
-                mSocket?.emit("userData", authBody)
-                Completable.complete()
-            } catch (e: Exception) {
-                Completable.error(e)
-            }
+    override fun login(authBody: AuthEntities.AuthBody){
+        try {
+            val jsonObject = JSONObject()
+            jsonObject.put("userName",authBody.userName)
+            jsonObject.put("email",authBody.email)
+            jsonObject.put("password",authBody.password)
+            socketConnector.initConnection()?.emit("userData", jsonObject)
+        } catch (e: Exception) {
         }
     }
 
-    override fun closeConnection(){
-        mSocket?.disconnect()
+
+    override fun listenEvents(authSubject: PublishSubject<String>){
+        listener = Emitter.Listener { args ->
+            val jsonObject: JSONObject = args[0] as JSONObject
+            try {
+                val messageObject : JSONObject = jsonObject.getJSONObject("message")
+                val message : String = messageObject.get("text") as String
+                authSubject.onNext(message)
+            }catch (e : Exception){
+                authSubject.onNext(e.message.toString())
+            }
+        }
+        socketConnector.initConnection()?.on("message",listener)
     }
 
+    override fun stopEventListening() {
+        socketConnector.initConnection()?.off("message")
+        listener = null
+    }
 
 }
 

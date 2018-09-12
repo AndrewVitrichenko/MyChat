@@ -1,6 +1,5 @@
 package com.rockwellstudios.mychat.utils
 
-import android.content.Context
 import android.content.SharedPreferences
 import javax.inject.Inject
 

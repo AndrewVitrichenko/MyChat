@@ -2,17 +2,10 @@ package com.rockwellstudios.mychat.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
-
 import com.rockwellstudios.mychat.R
 import com.rockwellstudios.mychat.base.BaseActivity
-import com.rockwellstudios.mychat.common.IP_LOCAL_HOST
 import com.rockwellstudios.mychat.ui.auth.login.LoginFragment
 import com.rockwellstudios.mychat.ui.main.MainActivity
-
-import io.socket.client.IO
-import io.socket.client.Socket
-
-import java.net.URISyntaxException
 import javax.inject.Inject
 
 /**

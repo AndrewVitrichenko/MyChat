@@ -1,7 +1,6 @@
 package com.rockwellstudios.mychat.base
 
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import dagger.android.support.DaggerAppCompatActivity
 
 /**

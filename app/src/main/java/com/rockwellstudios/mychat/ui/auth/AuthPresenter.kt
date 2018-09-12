@@ -1,7 +1,5 @@
 package com.rockwellstudios.mychat.ui.auth
 
-import android.content.Context
-import android.content.SharedPreferences
 import com.rockwellstudios.mychat.utils.SharedPreferencesDataSource
 import javax.inject.Inject
 
@@ -16,11 +14,11 @@ class AuthPresenter @Inject constructor(val view : AuthContract.View,
 
     override fun attach() {
         val userId = sharedPreferencesDataSource.getString(USER_ID,"")
-        userId?.let {
+        userId.let {
             if (it.isEmpty()){
-                view?.showLoginScreen()
+                view.showLoginScreen()
             } else{
-                view?.showMainScreen()
+                view.showMainScreen()
             }
         }
     }

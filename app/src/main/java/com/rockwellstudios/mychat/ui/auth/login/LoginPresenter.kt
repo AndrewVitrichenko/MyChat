@@ -4,10 +4,7 @@ import android.util.Log
 import com.rockwellstudios.mychat.R
 import com.rockwellstudios.mychat.entity.AuthEntities
 import com.rockwellstudios.mychat.utils.ResourceUtil
-import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.BiFunction
-import io.reactivex.functions.Consumer
 import io.reactivex.rxkotlin.Observables
 import javax.inject.Inject
 
@@ -21,9 +18,10 @@ class LoginPresenter @Inject constructor(val view: LoginContract.View,
 
     override fun attach() {
         Observables.combineLatest(
+                view.userNameInputStream(),
                 view.emailInputStream(),
                 view.passwordInputStream()
-        ) { email, password -> AuthEntities.AuthBody(email, password) }
+        ) { userName, email, password -> AuthEntities.AuthBody(userName,email, password) }
                 .sample(view.signInButtonClick())
                 .doOnNext { view.showLoading(true) }
                 .doOnNext { authBody ->
@@ -56,7 +54,7 @@ class LoginPresenter @Inject constructor(val view: LoginContract.View,
     }
 
     override fun detach() {
-        compositeDisposable?.clear()
+        compositeDisposable.clear()
     }
 
 

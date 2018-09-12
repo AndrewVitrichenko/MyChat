@@ -1,6 +1,5 @@
 package com.rockwellstudios.mychat.ui.auth.di
 
-import android.content.SharedPreferences
 import com.rockwellstudios.mychat.ui.auth.AuthActivity
 import com.rockwellstudios.mychat.ui.auth.AuthContract
 import com.rockwellstudios.mychat.ui.auth.AuthPresenter
@@ -14,7 +13,6 @@ import com.rockwellstudios.mychat.ui.auth.registration.RegistrationFragment
 import com.rockwellstudios.mychat.ui.auth.registration.RegistrationPresenter
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 
 /**
  * Created by user on 23.03.18.

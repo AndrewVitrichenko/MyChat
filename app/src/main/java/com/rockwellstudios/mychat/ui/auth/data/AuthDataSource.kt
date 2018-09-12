@@ -1,15 +1,16 @@
 package com.rockwellstudios.mychat.ui.auth.data
 
 import com.rockwellstudios.mychat.entity.AuthEntities
-import io.reactivex.Completable
+import io.reactivex.subjects.PublishSubject
 
 interface AuthDataSource {
 
-    fun initConnection()
+    fun registerUser(authBody: AuthEntities.AuthBody)
 
-    fun closeConnection()
+    fun login(authBody: AuthEntities.AuthBody)
 
-    fun registerUser(authBody: AuthEntities.AuthBody): Completable
+    fun listenEvents(authSubject: PublishSubject<String>)
 
-    fun login(authBody: AuthEntities.AuthBody): Completable
+    fun stopEventListening()
+
 }

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MyChat</string>
     <string name="title_email">Email</string>
+    <string name="title_username">Username</string>
     <string name="title_password">Password</string>
     <string name="title_sign_in">Sign in</string>
     <string name="title_sign_up">Sign up</string>
