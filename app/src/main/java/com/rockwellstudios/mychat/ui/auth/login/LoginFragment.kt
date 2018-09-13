@@ -31,7 +31,7 @@ class LoginFragment : BaseAuthFragment(), LoginContract.View {
         presenter.attach()
     }
 
-    override fun signInButtonClick(): Observable<Any> = viewClick(btnSignIn)
+    override fun signInButtonClick(): Observable<Any> = viewClick(btnSignIn).share()
 
     override fun moveToCoreScreen() {
         activity?.let {

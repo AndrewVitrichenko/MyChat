@@ -30,15 +30,16 @@ function logUserIn(socket,io){
           email:data.email
         };
 
-        admin.auth().createCustomToken(userRecord.uidInternal, additionalClaims)
+        admin.auth().createCustomToken(userRecord.uid, additionalClaims)
         .then((customToken) =>{
           Object.keys(io.sockets.sockets).forEach((id) =>{
             if (id == socket.id) {
+                console.log(snapshot.val());
               var token = {
                 authToken:customToken,
                 email:data.email,
-                userPicture:shapshot.val().userPicture,
-                userName:shapshot.val().userName
+                userPicture:snapshot.val().userPicture,
+                userName:snapshot.val().userName
               }
               io.to(id).emit('token',{token});
             }
@@ -65,7 +66,7 @@ function registerUser(socket,io){
   socket.on('userData', (data)=>{
     admin.auth().createUser({
       email:data.email,
-      userName:data.userName,
+      displayName:data.userName,
       password:data.password
     })
     .then((userRecord) =>{

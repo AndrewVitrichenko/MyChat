@@ -16,5 +16,5 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun providePublishSubject() = PublishSubject.create<String>()
+    fun providePublishSubject() = PublishSubject.create<Any>()
 }

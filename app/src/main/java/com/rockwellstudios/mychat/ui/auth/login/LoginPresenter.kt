@@ -2,10 +2,20 @@ package com.rockwellstudios.mychat.ui.auth.login
 
 import android.util.Log
 import com.rockwellstudios.mychat.R
+import com.rockwellstudios.mychat.common.USER_EMAIL
+import com.rockwellstudios.mychat.common.USER_NAME
+import com.rockwellstudios.mychat.common.USER_PICTURE
+import com.rockwellstudios.mychat.common.USER_TOKEN
 import com.rockwellstudios.mychat.entity.AuthEntities
+import com.rockwellstudios.mychat.ui.auth.data.AuthDataSource
+import com.rockwellstudios.mychat.utils.PreferenceDataSource
 import com.rockwellstudios.mychat.utils.ResourceUtil
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Consumer
 import io.reactivex.rxkotlin.Observables
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 /**
@@ -13,6 +23,9 @@ import javax.inject.Inject
  */
 class LoginPresenter @Inject constructor(val view: LoginContract.View,
                                          val compositeDisposable: CompositeDisposable,
+                                         val authSubject: PublishSubject<Any>,
+                                         val authDataSource: AuthDataSource,
+                                         val preferenceDataSource: PreferenceDataSource,
                                          val resourceUtil: ResourceUtil) : LoginContract.Presenter {
 
 
@@ -20,7 +33,7 @@ class LoginPresenter @Inject constructor(val view: LoginContract.View,
         Observables.combineLatest(
                 view.emailInputStream(),
                 view.passwordInputStream()
-        ) {email, password -> AuthEntities.AuthBody("",email, password) }
+        ) { email, password -> AuthEntities.AuthBody("", email, password, "", "") }
                 .sample(view.signInButtonClick())
                 .doOnNext { view.showLoading(true) }
                 .doOnNext { authBody ->
@@ -34,17 +47,38 @@ class LoginPresenter @Inject constructor(val view: LoginContract.View,
                     }
                 }
                 .filter { authBody -> !authBody.email.trim().isEmpty() && !authBody.password.trim().isEmpty() }
+                .flatMap { authBody -> authDataSource.login(authBody) }
                 .doOnSubscribe { compositeDisposable.add(it) }
-//                .flatMap{ authBody ->  }
-                .subscribe({
-                    view.apply {
-                        showLoading(false)
-                        moveToCoreScreen()
+                .subscribe(
+                        { authBody ->
+                            println(authBody.toString())
+                        },
+                        { error ->
+                            println(error.message)
+                        }
+                )
+
+
+        authSubject.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .doOnNext { view.showLoading(false) }
+                .subscribe { message ->
+                    if (message is String) {
+                        view.showMessage(message)
+                    } else {
+                        val authBodyResponse: AuthEntities.AuthBody = message as AuthEntities.AuthBody
+                        preferenceDataSource.apply {
+                            putString(USER_TOKEN, authBodyResponse.token)
+                            putString(USER_EMAIL, authBodyResponse.email)
+                            putString(USER_NAME, authBodyResponse.userName)
+                            putString(USER_PICTURE, authBodyResponse.userPicture)
+                        }
+                        view.moveToCoreScreen()
                     }
-                }, { error ->
-                            view.showLoading(false)
-                            Log.e("TAG", "{$error.message}")
-                        })
+                }
+
+        authDataSource.listenEvents()
 
         view.signUpButtonClick()
                 .doOnSubscribe { compositeDisposable.add(it) }
@@ -53,6 +87,7 @@ class LoginPresenter @Inject constructor(val view: LoginContract.View,
     }
 
     override fun detach() {
+        authDataSource.stopEventListening()
         compositeDisposable.clear()
     }
 

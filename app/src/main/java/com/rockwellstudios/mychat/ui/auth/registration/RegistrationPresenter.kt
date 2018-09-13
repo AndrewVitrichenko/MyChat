@@ -17,7 +17,7 @@ import javax.inject.Inject
 class RegistrationPresenter @Inject constructor(val view: RegistrationContract.View,
                                                 val compositeDisposable: CompositeDisposable,
                                                 val authDataSource: AuthDataSource,
-                                                val authSubject: PublishSubject<String>,
+                                                val authSubject: PublishSubject<Any>,
                                                 val resourceUtil: ResourceUtil) : RegistrationContract.Presenter {
 
 
@@ -26,7 +26,7 @@ class RegistrationPresenter @Inject constructor(val view: RegistrationContract.V
                 view.userNameInputStream(),
                 view.emailInputStream(),
                 view.passwordInputStream()
-        ) { userName,email, password -> AuthEntities.AuthBody(userName,email, password) }
+        ) { userName, email, password -> AuthEntities.AuthBody(userName, email, password, "","") }
                 .sample(view.signUpButtonClick())
                 .doOnNext { view.showLoading(true) }
                 .doOnNext { authBody ->
@@ -39,26 +39,29 @@ class RegistrationPresenter @Inject constructor(val view: RegistrationContract.V
                         }
                     }
                 }
-                .filter { authBody -> !authBody.userName.trim().isEmpty() &&
-                        !authBody.email.trim().isEmpty() && !authBody.password.trim().isEmpty() }
+                .filter { authBody ->
+                    !authBody.userName.trim().isEmpty() &&
+                            !authBody.email.trim().isEmpty() && !authBody.password.trim().isEmpty()
+                }
                 .observeOn(Schedulers.io())
-                .doOnNext { authBody -> authDataSource.registerUser(authBody)}
+                .doOnNext { authBody -> authDataSource.registerUser(authBody) }
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe()
 
         authSubject.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe{compositeDisposable.add(it)}
+                .doOnSubscribe { compositeDisposable.add(it) }
                 .doOnNext { view.showLoading(false) }
-                .subscribe {message ->
-                    when (message){
-                        "Success" -> view.moveToLogin()
-                        else -> view.showMessage(message)
-
+                .subscribe { message ->
+                    if (message is String) {
+                        when (message) {
+                            "Success" -> view.moveToLogin()
+                            else -> view.showMessage(message)
+                        }
                     }
                 }
 
-        authDataSource.listenEvents(authSubject)
+        authDataSource.listenEvents()
     }
 
     override fun detach() {

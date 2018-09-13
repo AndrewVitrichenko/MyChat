@@ -60,7 +60,7 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
     implementation "com.google.dagger:dagger-android-support:$dagger_version"
 
-//    implementation 'com.google.firebase:firebase-core:11.8.0'
+    implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation "com.google.firebase:firebase-storage:$firebase_version"
     implementation "com.google.firebase:firebase-database:$firebase_version"
     implementation "com.google.firebase:firebase-auth:16.0.3"
