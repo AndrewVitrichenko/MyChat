@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_inbox"
+        android:enabled="true"
+        android:icon="@drawable/svg_message"
+        android:title="@string/title_inbox"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_friends"
+        android:enabled="true"
+        android:icon="@drawable/svg_people"
+        android:title="@string/title_friends"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_profile"
+        android:enabled="true"
+        android:icon="@drawable/svg_person"
+        android:title="@string/title_profile"
+        app:showAsAction="ifRoom" />
 </menu>

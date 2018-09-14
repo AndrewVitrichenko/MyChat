@@ -6,4 +6,7 @@
     <string name="title_sign_in">Sign in</string>
     <string name="title_sign_up">Sign up</string>
     <string name="error_incorrect_data">Incorrect data!</string>
+    <string name="title_inbox">Inbox</string>
+    <string name="title_friends">Friends</string>
+    <string name="title_profile">Profile</string>
 </resources>

@@ -14,14 +14,14 @@ class AuthPresenter @Inject constructor(val view : AuthContract.View,
     : AuthContract.Presenter {
 
     override fun attach() {
-//        val userId = preferenceDataSource.getString(USER_TOKEN,"")
-//        userId.let {
-//            if (it.isEmpty()){
+        val userId = preferenceDataSource.getString(USER_TOKEN,"")
+        userId.let {
+            if (it.isEmpty()){
                 view.showLoginScreen()
-//            } else{
-//                view.showMainScreen()
-//            }
-//        }
+            } else{
+                view.showMainScreen()
+            }
+        }
     }
 
     override fun detach() {
