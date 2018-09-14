@@ -10,8 +10,10 @@ import com.rockwellstudios.mychat.entity.AuthEntities
 import com.rockwellstudios.mychat.ui.auth.data.AuthDataSource
 import com.rockwellstudios.mychat.utils.PreferenceDataSource
 import com.rockwellstudios.mychat.utils.ResourceUtil
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.schedulers.Schedulers
@@ -30,10 +32,12 @@ class LoginPresenter @Inject constructor(val view: LoginContract.View,
 
 
     override fun attach() {
-        Observables.combineLatest(
-                view.emailInputStream(),
-                view.passwordInputStream()
-        ) { email, password -> AuthEntities.AuthBody("", email, password, "", "") }
+
+        val emailStream = view.emailInputStream()
+        val passwordStream = view.passwordInputStream()
+
+        Observable.combineLatest(emailStream, passwordStream,
+                BiFunction { email: String, password: String -> AuthEntities.AuthBody("", email, password, "", "") })
                 .sample(view.signInButtonClick())
                 .doOnNext { view.showLoading(true) }
                 .doOnNext { authBody ->
@@ -47,16 +51,12 @@ class LoginPresenter @Inject constructor(val view: LoginContract.View,
                     }
                 }
                 .filter { authBody -> !authBody.email.trim().isEmpty() && !authBody.password.trim().isEmpty() }
-                .flatMap { authBody -> authDataSource.login(authBody) }
+                .flatMap { authBody ->
+                    authDataSource.login(authBody).subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                }
                 .doOnSubscribe { compositeDisposable.add(it) }
-                .subscribe(
-                        { authBody ->
-                            println(authBody.toString())
-                        },
-                        { error ->
-                            println(error.message)
-                        }
-                )
+                .subscribe()
 
 
         authSubject.subscribeOn(Schedulers.io())
