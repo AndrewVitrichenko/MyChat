@@ -1,1 +1,14 @@
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+/.idea/vcs.xml
+.DS_Store
 /build
+/captures
+.externalNativeBuild
+
+/backend/node-server/node_modules/
+
+

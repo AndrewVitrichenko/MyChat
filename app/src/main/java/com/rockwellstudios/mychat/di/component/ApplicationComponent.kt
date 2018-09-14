@@ -3,6 +3,7 @@ package com.rockwellstudios.mychat.di.component
 import com.rockwellstudios.mychat.MainApplication
 import com.rockwellstudios.mychat.di.module.AndroidModule
 import com.rockwellstudios.mychat.di.module.AppModule
+import com.rockwellstudios.mychat.di.module.NetworkModule
 import com.rockwellstudios.mychat.di.module.UtilModule
 import dagger.BindsInstance
 import dagger.Component
@@ -18,6 +19,7 @@ import javax.inject.Singleton
 @Component(modules = arrayOf(AndroidSupportInjectionModule::class,
         AppModule::class,
         AndroidModule::class,
+        NetworkModule::class,
         UtilModule::class))
 interface ApplicationComponent : AndroidInjector<DaggerApplication> {
 

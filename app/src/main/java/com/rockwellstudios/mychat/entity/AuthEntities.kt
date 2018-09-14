@@ -5,6 +5,7 @@ package com.rockwellstudios.mychat.entity
  */
 class AuthEntities {
 
-    data class AuthBody(var email : String, var password : String)
+    data class AuthBody(var userName : String,var email : String, var password : String,var userPicture : String,
+                        var token : String)
 
 }

@@ -1,28 +1,20 @@
 package com.rockwellstudios.mychat.ui.auth.login
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.rockwellstudios.mychat.R
-import com.rockwellstudios.mychat.base.BaseFragment
-import com.rockwellstudios.mychat.entity.AuthEntities
-import kotlinx.android.synthetic.main.fragment_login.*
+import com.rockwellstudios.mychat.base.BaseAuthFragment
+import com.rockwellstudios.mychat.ui.auth.AuthActivity
+import com.rockwellstudios.mychat.ui.auth.AuthContract
+import com.rockwellstudios.mychat.ui.auth.registration.RegistrationFragment
+import io.reactivex.Observable
+import kotlinx.android.synthetic.main.layout_auth.*
 import javax.inject.Inject
 
 /**
  * Created by Andrew on 25.02.2018.
  */
-class LoginFragment : BaseFragment(), LoginContract.View {
-
-    override fun showLoading(loading: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun showMessage(message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+class LoginFragment : BaseAuthFragment(), LoginContract.View {
 
     @Inject
     lateinit var presenter: LoginContract.Presenter
@@ -31,17 +23,32 @@ class LoginFragment : BaseFragment(), LoginContract.View {
         fun newInstance() = LoginFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_login,container,false)
+    override fun getLayoutContainer(): Int = R.layout.fragment_login
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        editTextUserName.visibility = View.GONE
+        presenter.attach()
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        btnSignIn.setOnClickListener { v ->
-            val authBody = AuthEntities.AuthBody(
-                    email = editTextEmail.text.toString(),
-                    password = editTextPassword.text.toString()
-            )
-            presenter.onSignInButtonClick(authBody)}
+    override fun signInButtonClick(): Observable<Any> = viewClick(btnSignIn).share()
+
+    override fun moveToCoreScreen() {
+        activity?.let {
+            val authView: AuthContract.View = it as AuthContract.View
+            authView.showMainScreen()
+        }
+    }
+
+    override fun showSignUpScreen() {
+        activity?.let {
+            val authActivity : AuthActivity = it as AuthActivity
+            authActivity.showFragment(RegistrationFragment.newInstance(),true)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.detach()
     }
 }

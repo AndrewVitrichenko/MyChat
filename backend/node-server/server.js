@@ -14,12 +14,9 @@ admin.initializeApp({
   databaseURL: "https://mychat-a1e22.firebaseio.com"
 });
 
-io.on('connection',(socket)=>{
-  console.log('Client ' + socket.id  + ' is connected!');
-  socket.on('disconnect',()=>{
-    console.log('Client is disconnected!');
-  })
-});
+var accountRequests = require('./firebase/account-services');
+
+accountRequests.userAccountRequests(io)
 
 http.listen(3000,()=>{
     console.log('Server is listening on port 3000');

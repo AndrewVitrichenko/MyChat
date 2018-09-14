@@ -1,7 +1,8 @@
 package com.rockwellstudios.mychat.ui.auth
 
-import android.content.Context
-import android.content.SharedPreferences
+import com.google.firebase.auth.FirebaseAuth
+import com.rockwellstudios.mychat.common.USER_TOKEN
+import com.rockwellstudios.mychat.utils.PreferenceDataSource
 import com.rockwellstudios.mychat.utils.SharedPreferencesDataSource
 import javax.inject.Inject
 
@@ -9,20 +10,18 @@ import javax.inject.Inject
  * Created by user on 23.03.18.
  */
 class AuthPresenter @Inject constructor(val view : AuthContract.View,
-                                            val sharedPreferencesDataSource: SharedPreferencesDataSource)
+                                            val preferenceDataSource: PreferenceDataSource)
     : AuthContract.Presenter {
 
-    private val USER_ID = "user_id"
-
     override fun attach() {
-        val userId = sharedPreferencesDataSource.getString(USER_ID,"")
-        userId?.let {
-            if (it.isEmpty()){
-                view?.showLoginScreen()
-            } else{
-                view?.showMainScreen()
-            }
-        }
+//        val userId = preferenceDataSource.getString(USER_TOKEN,"")
+//        userId.let {
+//            if (it.isEmpty()){
+                view.showLoginScreen()
+//            } else{
+//                view.showMainScreen()
+//            }
+//        }
     }
 
     override fun detach() {

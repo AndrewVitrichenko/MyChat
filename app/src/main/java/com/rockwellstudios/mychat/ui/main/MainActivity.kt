@@ -1,5 +1,6 @@
 package com.rockwellstudios.mychat.ui.main
 
+import com.rockwellstudios.mychat.R
 import com.rockwellstudios.mychat.base.BaseActivity
 
 /**
@@ -7,7 +8,7 @@ import com.rockwellstudios.mychat.base.BaseActivity
  */
 class MainActivity : BaseActivity() {
 
-    override fun getFragmentContainer(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getFragmentContainer(): Int = R.layout.activity_main
+
+
 }
