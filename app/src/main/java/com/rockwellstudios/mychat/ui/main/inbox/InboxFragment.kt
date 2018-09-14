@@ -14,6 +14,8 @@ class InboxFragment : BaseBottomBarFragment(),InboxContract.View {
         fun newInstance() = InboxFragment()
     }
 
+    override fun getFragmentTag(): String = javaClass.canonicalName
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_inbox,container,false)
     }

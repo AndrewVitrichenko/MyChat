@@ -8,11 +8,12 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import dagger.android.support.DaggerFragment
 import io.reactivex.Observable
 
-open class BaseFragment : DaggerFragment(), BaseView {
+abstract class BaseFragment : DaggerFragment(), BaseView {
 
     override fun showLoading(loading: Boolean) {
-
     }
+
+    abstract fun getFragmentTag() : String
 
     override fun showMessage(message: String) {
         context?.let {

@@ -14,9 +14,12 @@ class ProfileFragment : BaseBottomBarFragment(),ProfileContract.View {
         fun newInstance() = ProfileFragment()
     }
 
+    override fun getFragmentTag(): String = javaClass.canonicalName
+
+    override fun getBottomBarItem() = R.id.action_profile
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_profile,container,false)
     }
 
-    override fun getBottomBarItem() = R.id.action_profile
 }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.rockwellstudios.mychat.R
 import android.support.design.widget.BottomNavigationView
 import com.rockwellstudios.mychat.base.BaseBottomBarActivity
-import com.rockwellstudios.mychat.ui.main.addfriends.AddFriendsFragment
+import com.rockwellstudios.mychat.ui.main.friends.FriendsFragment
 import com.rockwellstudios.mychat.ui.main.inbox.InboxFragment
 import com.rockwellstudios.mychat.ui.main.profile.ProfileFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -31,7 +31,7 @@ class MainActivity : BaseBottomBarActivity(){
         getBottomBar().setOnNavigationItemSelectedListener { item ->
             when(item.itemId){
                 R.id.action_inbox -> showFragment(InboxFragment.newInstance(),true)
-                R.id.action_friends -> showFragment(AddFriendsFragment.newInstance(),true)
+                R.id.action_friends -> showFragment(FriendsFragment.newInstance(),true)
                 R.id.action_profile -> showFragment(ProfileFragment.newInstance(),true)
             }
             true

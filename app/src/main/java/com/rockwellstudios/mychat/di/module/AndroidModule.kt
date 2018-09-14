@@ -5,8 +5,10 @@ import com.rockwellstudios.mychat.ui.auth.di.AuthModule
 import com.rockwellstudios.mychat.ui.auth.login.LoginFragment
 import com.rockwellstudios.mychat.ui.auth.registration.RegistrationFragment
 import com.rockwellstudios.mychat.ui.main.MainActivity
-import com.rockwellstudios.mychat.ui.main.addfriends.AddFriendsFragment
+import com.rockwellstudios.mychat.ui.main.friends.FriendsFragment
 import com.rockwellstudios.mychat.ui.main.di.MainModule
+import com.rockwellstudios.mychat.ui.main.friends.requests.FriendRequestsFragment
+import com.rockwellstudios.mychat.ui.main.friends.user.UserFriendsFragment
 import com.rockwellstudios.mychat.ui.main.inbox.InboxFragment
 import com.rockwellstudios.mychat.ui.main.profile.ProfileFragment
 import dagger.Module
@@ -34,9 +36,12 @@ abstract class AndroidModule {
     abstract fun inboxFragmentInjector(): InboxFragment
 
     @ContributesAndroidInjector(modules = arrayOf(MainModule::class))
-    abstract fun addFriendsFragmentInjector(): AddFriendsFragment
+    abstract fun friendsFragmentInjector(): FriendsFragment
 
     @ContributesAndroidInjector(modules = arrayOf(MainModule::class))
-    abstract fun profileFragmentInjector(): ProfileFragment
+    abstract fun userFriendsFragmentInjector(): UserFriendsFragment
+
+    @ContributesAndroidInjector(modules = arrayOf(MainModule::class))
+    abstract fun friendsRequestsFragmentInjector(): FriendRequestsFragment
 
 }

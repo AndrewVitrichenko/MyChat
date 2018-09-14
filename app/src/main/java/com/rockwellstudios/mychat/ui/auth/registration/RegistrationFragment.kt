@@ -19,6 +19,8 @@ class RegistrationFragment : BaseAuthFragment(), RegistrationContract.View {
         fun newInstance() = RegistrationFragment()
     }
 
+    override fun getFragmentTag(): String = javaClass.canonicalName
+
     override fun getLayoutContainer(): Int = R.layout.fragment_registration
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

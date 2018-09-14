@@ -9,21 +9,22 @@ import dagger.android.support.DaggerAppCompatActivity
 abstract class BaseActivity : DaggerAppCompatActivity() {
 
 
-    fun showFragment(fragmentToShow: Fragment, addToBackStack : Boolean) {
+    fun showFragment(fragmentToShow: BaseFragment, addToBackStack : Boolean) {
         supportFragmentManager?.let {
             if (!addToBackStack){
                 it.beginTransaction()
-                        .replace(getFragmentContainer(), fragmentToShow, fragmentToShow.tag)
+                        .replace(getFragmentContainer(), fragmentToShow, fragmentToShow.getFragmentTag())
                         .commitAllowingStateLoss()
             } else {
-                val fragment = it.findFragmentByTag(fragmentToShow.tag)
+                val fragment = it.findFragmentByTag(fragmentToShow.getFragmentTag())
                 if (fragment == null) {
                     it.beginTransaction()
-                            .replace(getFragmentContainer(), fragmentToShow, fragmentToShow.tag)
-                            .addToBackStack(fragmentToShow.tag)
+                            .replace(getFragmentContainer(), fragmentToShow, fragmentToShow.getFragmentTag())
+                            .addToBackStack(fragmentToShow.getFragmentTag())
                             .commitAllowingStateLoss()
                 } else {
-                    it.popBackStack(fragment.tag, 0)
+                    val castedFragment = fragment as BaseFragment
+                    it.popBackStack(castedFragment.getFragmentTag(), 0)
                 }
             }
         }

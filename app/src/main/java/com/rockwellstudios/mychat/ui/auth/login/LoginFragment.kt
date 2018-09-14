@@ -25,6 +25,8 @@ class LoginFragment : BaseAuthFragment(), LoginContract.View {
 
     override fun getLayoutContainer(): Int = R.layout.fragment_login
 
+    override fun getFragmentTag(): String = javaClass.canonicalName
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         editTextUserName.visibility = View.GONE

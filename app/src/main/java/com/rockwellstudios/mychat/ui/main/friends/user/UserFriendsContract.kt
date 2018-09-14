@@ -1,10 +1,9 @@
-package com.rockwellstudios.mychat.ui.main.addfriends
+package com.rockwellstudios.mychat.ui.main.friends.user
 
-import com.rockwellstudios.mychat.base.BaseBottomBarView
 import com.rockwellstudios.mychat.base.BasePresenter
 import com.rockwellstudios.mychat.base.BaseView
 
-interface AddFriendsContract {
+interface UserFriendsContract {
 
     interface View : BaseView
 

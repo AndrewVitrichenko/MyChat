@@ -1,6 +1,7 @@
-package com.rockwellstudios.mychat.ui.main.addfriends
+package com.rockwellstudios.mychat.ui.main.friends.requests
 
-class AddFriendsPresenter : AddFriendsContract.Presenter {
+class FriendRequestsPresenter : FriendRequestsContract.Presenter {
+
 
     override fun attach() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -9,5 +10,4 @@ class AddFriendsPresenter : AddFriendsContract.Presenter {
     override fun detach() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
 }
