@@ -16,11 +16,11 @@ class AuthActivity : BaseActivity(), AuthContract.View {
     @Inject
     lateinit var presenter: AuthContract.Presenter
 
-    override fun getFragmentContainer() = R.id.activity_main_fragment_container
+    override fun getFragmentContainer() = R.id.activity_auth_fragment_container
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_auth)
         presenter.attach()
     }
 

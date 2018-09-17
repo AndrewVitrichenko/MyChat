@@ -3,6 +3,9 @@ package com.rockwellstudios.mychat.ui.main.di
 import com.rockwellstudios.mychat.ui.main.friends.FriendsContract
 import com.rockwellstudios.mychat.ui.main.friends.FriendsFragment
 import com.rockwellstudios.mychat.ui.main.friends.FriendsPresenter
+import com.rockwellstudios.mychat.ui.main.friends.find.FindFriendsContract
+import com.rockwellstudios.mychat.ui.main.friends.find.FindFriendsFragment
+import com.rockwellstudios.mychat.ui.main.friends.find.FindFriendsPresenter
 import com.rockwellstudios.mychat.ui.main.friends.requests.FriendRequestsContract
 import com.rockwellstudios.mychat.ui.main.friends.requests.FriendRequestsFragment
 import com.rockwellstudios.mychat.ui.main.friends.requests.FriendRequestsPresenter
@@ -26,6 +29,12 @@ abstract class MainModule {
 
     @Binds
     abstract fun bindFriendsPresenter(addFriendsPresenter: FriendsPresenter): FriendsContract.Presenter
+
+    @Binds
+    abstract fun bindFindFriendsView(findFriendsFragment: FindFriendsFragment): FindFriendsContract.View
+
+    @Binds
+    abstract fun bindFindFriendsPresenter(findFriendsPresenter: FindFriendsPresenter): FindFriendsContract.Presenter
 
     @Binds
     abstract fun bindUserFriendsView(userFriendsFragment: UserFriendsFragment): UserFriendsContract.View

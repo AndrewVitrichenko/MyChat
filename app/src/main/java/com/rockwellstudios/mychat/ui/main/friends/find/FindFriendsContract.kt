@@ -1,15 +1,11 @@
-package com.rockwellstudios.mychat.ui.main.friends
+package com.rockwellstudios.mychat.ui.main.friends.find
 
 import com.rockwellstudios.mychat.base.BasePresenter
 import com.rockwellstudios.mychat.base.BaseView
 
-interface FriendsContract {
+interface FindFriendsContract {
 
-    interface View : BaseView {
-
-        fun initPager()
-
-    }
+    interface View : BaseView
 
     interface Presenter : BasePresenter
 }

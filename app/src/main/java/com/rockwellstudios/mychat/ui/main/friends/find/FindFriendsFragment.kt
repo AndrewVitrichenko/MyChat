@@ -1,4 +1,4 @@
-package com.rockwellstudios.mychat.ui.main.friends.user
+package com.rockwellstudios.mychat.ui.main.friends.find
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,15 +7,15 @@ import android.view.ViewGroup
 import com.rockwellstudios.mychat.R
 import com.rockwellstudios.mychat.base.BaseFragment
 
-class UserFriendsFragment : BaseFragment(),UserFriendsContract.View {
+class FindFriendsFragment : BaseFragment(),FindFriendsContract.View {
 
     companion object {
-        fun newInstance() = UserFriendsFragment()
+        fun newInstance() = FindFriendsFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_user_friends,container,false)
+        return inflater.inflate(R.layout.fragment_find_friends,container,false)
     }
 
-    override fun getFragmentTag(): String = javaClass.canonicalName
+    override fun getFragmentTag(): String  = javaClass.canonicalName
 }
