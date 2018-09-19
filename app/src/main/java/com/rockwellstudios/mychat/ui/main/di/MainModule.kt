@@ -6,6 +6,8 @@ import com.rockwellstudios.mychat.ui.main.friends.FriendsPresenter
 import com.rockwellstudios.mychat.ui.main.friends.find.FindFriendsContract
 import com.rockwellstudios.mychat.ui.main.friends.find.FindFriendsFragment
 import com.rockwellstudios.mychat.ui.main.friends.find.FindFriendsPresenter
+import com.rockwellstudios.mychat.ui.main.friends.find.datasource.FriendsDataSource
+import com.rockwellstudios.mychat.ui.main.friends.find.datasource.FriendsRemoteDataSource
 import com.rockwellstudios.mychat.ui.main.friends.requests.FriendRequestsContract
 import com.rockwellstudios.mychat.ui.main.friends.requests.FriendRequestsFragment
 import com.rockwellstudios.mychat.ui.main.friends.requests.FriendRequestsPresenter
@@ -23,6 +25,9 @@ import dagger.Module
 
 @Module
 abstract class MainModule {
+
+    @Binds
+    abstract fun bindFriendsDataSource(friendsRemoteDataSource: FriendsRemoteDataSource): FriendsDataSource
 
     @Binds
     abstract fun bindFriendsView(addFriendsFragment: FriendsFragment): FriendsContract.View

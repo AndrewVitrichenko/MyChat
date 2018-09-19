@@ -5,7 +5,7 @@ package com.rockwellstudios.mychat.common
  */
 
 // home windows
-const val IP_LOCAL_HOST = "http://192.168.0.101:3000"
+//const val IP_LOCAL_HOST = "http://192.168.0.101:3000"
 
 // work linux
-//const val IP_LOCAL_HOST = "http://192.168.1.83:3000"
+const val IP_LOCAL_HOST = "http://192.168.1.83:3000"

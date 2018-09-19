@@ -9,6 +9,10 @@ const val USER_EMAIL = "user_email"
 const val USER_NAME = "user_name"
 const val USER_PICTURE = "user_picture"
 
+
+const val FIREBASE_PATH_USERS = "users"
+const val FIREBASE_PATH_FRIEND_REQUEST_SENT = "friendRequestSent"
+
 const val INBOX_SCREEN = 1
 const val ADD_FRIENDS_SCREEN = 2
 const val PROFILE_SCREEN = 3
