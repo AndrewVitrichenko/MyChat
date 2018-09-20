@@ -44,13 +44,16 @@ class FindFriendsFragment : BaseFragment(),FindFriendsContract.View, FindFriends
         findFriendsRecyclerView.adapter = findFriendsAdapter
     }
 
-    override fun setUsersList(userList: MutableList<User>) {
+    override fun setUsersList(userList: MutableList<User?>) {
         findFriendsAdapter.setUsers(userList)
     }
 
-    override fun onUserClick(user: User) {
+    override fun onUserClick(user: User?) {
         presenter.onUserClick(user)
-//        Toast.makeText(context,user.toString(),Toast.LENGTH_SHORT).show()
+    }
+
+    override fun setFriendsRequestSentMap(friendsRequests: HashMap<String, User?>) {
+        findFriendsAdapter.setFriendRequestSentMap(friendsRequests)
     }
 
     override fun onDestroyView() {

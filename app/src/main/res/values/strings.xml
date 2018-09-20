@@ -11,4 +11,6 @@
     <string name="title_profile">Profile</string>
     <string name="title_friends_requests">Requests</string>
     <string name="title_find_friends">Find friends</string>
+    <string name="title_friend_request_send">Friend request send!</string>
+    <string name="title_user_requested_you">This user requested you</string>
 </resources>

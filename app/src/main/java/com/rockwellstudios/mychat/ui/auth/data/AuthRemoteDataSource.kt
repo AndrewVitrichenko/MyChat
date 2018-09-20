@@ -15,10 +15,12 @@ class AuthRemoteDataSource @Inject constructor(val socketConnector: SocketConnec
     override fun registerUser(authBody: AuthEntities.AuthBody) {
         try {
             val jsonObject = JSONObject()
-            jsonObject.put("userName", authBody.userName)
-            jsonObject.put("email", authBody.email)
-            jsonObject.put("password", authBody.password)
-            socketConnector.initConnection()?.emit("userData", jsonObject)
+            jsonObject.apply {
+                put("userName", authBody.userName)
+                put("email", authBody.email)
+                put("password", authBody.password)
+                socketConnector.initConnection()?.emit("userData", jsonObject)
+            }
         } catch (e: Exception) {
         }
     }

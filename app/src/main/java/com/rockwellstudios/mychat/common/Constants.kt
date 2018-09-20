@@ -12,9 +12,9 @@ const val USER_PICTURE = "user_picture"
 
 const val FIREBASE_PATH_USERS = "users"
 const val FIREBASE_PATH_FRIEND_REQUEST_SENT = "friendRequestSent"
+const val FIREBASE_PATH_FRIEND_REQUEST_RECEIVED = "friendRequestReceived"
 
-const val INBOX_SCREEN = 1
-const val ADD_FRIENDS_SCREEN = 2
-const val PROFILE_SCREEN = 3
+const val ADD_FRIEND_REQUEST = 0
+const val REMOVE_FRIEND_REQUEST = 1
 
 

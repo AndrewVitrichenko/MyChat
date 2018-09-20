@@ -8,11 +8,13 @@ interface FindFriendsContract {
 
     interface View : BaseView {
 
-        fun setUsersList(userList: MutableList<User>)
+        fun setUsersList(userList: MutableList<User?>)
+
+        fun setFriendsRequestSentMap(friendsRequests: HashMap<String, User?>)
 
     }
 
     interface Presenter : BasePresenter {
-        fun onUserClick(user: User)
+        fun onUserClick(user: User?)
     }
 }

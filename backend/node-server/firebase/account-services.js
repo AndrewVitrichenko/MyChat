@@ -34,7 +34,6 @@ function logUserIn(socket,io){
         .then((customToken) =>{
           Object.keys(io.sockets.sockets).forEach((id) =>{
             if (id == socket.id) {
-                console.log(snapshot.val());
               var token = {
                 authToken:customToken,
                 email:data.email,

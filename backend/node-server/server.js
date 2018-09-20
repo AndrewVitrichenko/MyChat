@@ -16,7 +16,10 @@ admin.initializeApp({
 
 var accountRequests = require('./firebase/account-services');
 
-accountRequests.userAccountRequests(io)
+var friendRequests = require('./firebase/friend-services');
+
+accountRequests.userAccountRequests(io);
+friendRequests.userFriendRequests(io);
 
 http.listen(3000,()=>{
     console.log('Server is listening on port 3000');
