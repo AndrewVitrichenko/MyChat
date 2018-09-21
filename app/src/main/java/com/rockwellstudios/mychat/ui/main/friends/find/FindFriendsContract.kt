@@ -17,6 +17,12 @@ interface FindFriendsContract {
 
         fun setFriendsRequestReceivedMap(friendsRequestsReceivedMap: HashMap<String, User?>)
 
+        fun clearSearchButtonClick():Observable<Any>
+
+        fun setClearSearchButtonVisible(show: Boolean)
+
+        fun clearSearchText()
+
     }
 
     interface Presenter : BasePresenter {

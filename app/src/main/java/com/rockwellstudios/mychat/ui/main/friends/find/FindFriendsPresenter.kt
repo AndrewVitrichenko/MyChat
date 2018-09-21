@@ -26,17 +26,19 @@ class FindFriendsPresenter @Inject constructor(val view: FindFriendsContract.Vie
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe {
-                    setUsersList(it, false)
+                    setUsersList(it)
                 }
 
         view.searchInputStream()
                 .map { searchString ->
                     if (!searchString.isEmpty()) {
+                        view.setClearSearchButtonVisible(true)
                         return@map usersList.asSequence().filter {
                             it?.userName?.toLowerCase() == searchString
                         }
                                 .toMutableList()
-                    } else{
+                    } else {
+                        view.setClearSearchButtonVisible(false)
                         return@map usersList
                     }
                 }
@@ -44,7 +46,13 @@ class FindFriendsPresenter @Inject constructor(val view: FindFriendsContract.Vie
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe {
-                    setUsersList(it, true)
+                    view.setUsersList(it)
+                }
+
+        view.clearSearchButtonClick()
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .subscribe {
+                    view.clearSearchText()
                 }
 
         dataSource.listenFriendsRequestsSentEvents()
@@ -65,15 +73,11 @@ class FindFriendsPresenter @Inject constructor(val view: FindFriendsContract.Vie
 
     }
 
-    private fun setUsersList(usersList: MutableList<User?>, isSearching: Boolean) {
-        if (!isSearching) {
-            this.usersList.apply {
-                clear()
-                addAll(usersList)
-                view.setUsersList(this)
-            }
-        } else {
-            view.setUsersList(usersList)
+    private fun setUsersList(usersList: MutableList<User?>) {
+        this.usersList.apply {
+            clear()
+            addAll(usersList)
+            view.setUsersList(this)
         }
     }
 

@@ -11,6 +11,7 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.rockwellstudios.mychat.R
 import com.rockwellstudios.mychat.common.isIncludedInMap
 import com.rockwellstudios.mychat.ui.main.friends.find.entity.User
@@ -82,7 +83,7 @@ class FindFriendsAdapter : RecyclerView.Adapter<FindFriendsAdapter.FindFriendsVi
                  friendRequestsReceivedMap: HashMap<String, User?>) {
             itemView?.apply {
                 user?.apply {
-                    Glide.with(context).load(userPicture).into(imageViewUserPhoto)
+                    Glide.with(context).load(userPicture).apply(RequestOptions().dontAnimate()).into(imageViewUserPhoto)
                     textViewUserName.text = userName
                     when {
                         isIncludedInMap(friendRequestsSentMap, user) -> {

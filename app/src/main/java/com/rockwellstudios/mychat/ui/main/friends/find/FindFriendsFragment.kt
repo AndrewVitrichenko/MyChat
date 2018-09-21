@@ -46,8 +46,17 @@ class FindFriendsFragment : BaseFragment(), FindFriendsContract.View, FindFriend
         findFriendsRecyclerView.adapter = findFriendsAdapter
     }
 
-    override fun searchInputStream(): Observable<String> = RxTextView.textChanges(searchEditText)
-            .map { searchInput -> searchInput.toString() }
+    override fun searchInputStream(): Observable<String> = textChanges(searchEditText)
+
+    override fun clearSearchButtonClick(): Observable<Any> = viewClick(searchClearImageView)
+
+    override fun clearSearchText() {
+        searchEditText.setText("")
+    }
+
+    override fun setClearSearchButtonVisible(show: Boolean) {
+       searchClearImageView.visibility = if (show) View.VISIBLE else View.GONE
+    }
 
     override fun setUsersList(userList: MutableList<User?>) {
         findFriendsAdapter.setUsers(userList)
