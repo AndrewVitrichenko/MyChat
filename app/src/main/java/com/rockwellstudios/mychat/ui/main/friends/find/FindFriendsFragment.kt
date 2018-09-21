@@ -6,14 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.jakewharton.rxbinding2.widget.RxTextView
 import com.rockwellstudios.mychat.R
 import com.rockwellstudios.mychat.base.BaseFragment
 import com.rockwellstudios.mychat.ui.main.friends.find.entity.User
 import com.rockwellstudios.mychat.ui.main.friends.find.list.FindFriendsAdapter
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_find_friends.*
 import javax.inject.Inject
 
-class FindFriendsFragment : BaseFragment(),FindFriendsContract.View, FindFriendsAdapter.OnUserClickListener {
+class FindFriendsFragment : BaseFragment(), FindFriendsContract.View, FindFriendsAdapter.OnUserClickListener {
 
     @Inject
     lateinit var presenter: FindFriendsContract.Presenter
@@ -24,10 +26,10 @@ class FindFriendsFragment : BaseFragment(),FindFriendsContract.View, FindFriends
         fun newInstance() = FindFriendsFragment()
     }
 
-    override fun getFragmentTag(): String  = javaClass.canonicalName
+    override fun getFragmentTag(): String = javaClass.canonicalName
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_find_friends,container,false)
+        return inflater.inflate(R.layout.fragment_find_friends, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,6 +46,9 @@ class FindFriendsFragment : BaseFragment(),FindFriendsContract.View, FindFriends
         findFriendsRecyclerView.adapter = findFriendsAdapter
     }
 
+    override fun searchInputStream(): Observable<String> = RxTextView.textChanges(searchEditText)
+            .map { searchInput -> searchInput.toString() }
+
     override fun setUsersList(userList: MutableList<User?>) {
         findFriendsAdapter.setUsers(userList)
     }
@@ -52,8 +57,12 @@ class FindFriendsFragment : BaseFragment(),FindFriendsContract.View, FindFriends
         presenter.onUserClick(user)
     }
 
-    override fun setFriendsRequestSentMap(friendsRequests: HashMap<String, User?>) {
-        findFriendsAdapter.setFriendRequestSentMap(friendsRequests)
+    override fun setFriendsRequestSentMap(friendsRequestsSentMap: HashMap<String, User?>) {
+        findFriendsAdapter.setFriendRequestSentMap(friendsRequestsSentMap)
+    }
+
+    override fun setFriendsRequestReceivedMap(friendsRequestsReceivedMap: HashMap<String, User?>) {
+        findFriendsAdapter.setFriendRequestReceivedMap(friendsRequestsReceivedMap)
     }
 
     override fun onDestroyView() {

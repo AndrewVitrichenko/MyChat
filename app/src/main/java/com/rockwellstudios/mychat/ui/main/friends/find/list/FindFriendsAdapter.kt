@@ -93,6 +93,7 @@ class FindFriendsAdapter : RecyclerView.Adapter<FindFriendsAdapter.FindFriendsVi
                         }
                         isIncludedInMap(friendRequestsReceivedMap,user) -> {
                             imageViewFriendRequest.visibility = View.GONE
+                            textViewUserStatus.visibility = View.VISIBLE
                             textViewUserStatus.text = context.getString(R.string.title_user_requested_you)
                         }
                         else -> {

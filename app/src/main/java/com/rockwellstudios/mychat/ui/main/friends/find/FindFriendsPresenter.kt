@@ -5,6 +5,7 @@ import com.rockwellstudios.mychat.common.REMOVE_FRIEND_REQUEST
 import com.rockwellstudios.mychat.common.isIncludedInMap
 import com.rockwellstudios.mychat.ui.main.friends.find.datasource.FriendsDataSource
 import com.rockwellstudios.mychat.ui.main.friends.find.entity.User
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -16,6 +17,8 @@ class FindFriendsPresenter @Inject constructor(val view: FindFriendsContract.Vie
                                                val dataSource: FriendsDataSource) : FindFriendsContract.Presenter {
 
     private var friendRequestsSentMap: HashMap<String, User?> = hashMapOf()
+    private var friendRequestsReceivedMap: HashMap<String, User?> = hashMapOf()
+    private var usersList: MutableList<User?> = arrayListOf()
 
     override fun attach() {
         dataSource.listenUserEvents()
@@ -23,10 +26,28 @@ class FindFriendsPresenter @Inject constructor(val view: FindFriendsContract.Vie
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe {
-                    view.setUsersList(it)
+                    setUsersList(it, false)
                 }
 
-        dataSource.listenFriendsRequestsEvents()
+        view.searchInputStream()
+                .map { searchString ->
+                    if (!searchString.isEmpty()) {
+                        return@map usersList.asSequence().filter {
+                            it?.userName?.toLowerCase() == searchString
+                        }
+                                .toMutableList()
+                    } else{
+                        return@map usersList
+                    }
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .subscribe {
+                    setUsersList(it, true)
+                }
+
+        dataSource.listenFriendsRequestsSentEvents()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { compositeDisposable.add(it) }
@@ -34,9 +55,29 @@ class FindFriendsPresenter @Inject constructor(val view: FindFriendsContract.Vie
                     setFriendsRequestSentMap(it)
                 }
 
+        dataSource.listenFriendsRequestsReceivedEvents()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .subscribe {
+                    setFriendsRequestReceivedMap(it)
+                }
+
     }
 
-    private fun setFriendsRequestSentMap(friendRequestsSentMap:HashMap<String,User?>){
+    private fun setUsersList(usersList: MutableList<User?>, isSearching: Boolean) {
+        if (!isSearching) {
+            this.usersList.apply {
+                clear()
+                addAll(usersList)
+                view.setUsersList(this)
+            }
+        } else {
+            view.setUsersList(usersList)
+        }
+    }
+
+    private fun setFriendsRequestSentMap(friendRequestsSentMap: HashMap<String, User?>) {
         this.friendRequestsSentMap.apply {
             clear()
             putAll(friendRequestsSentMap)
@@ -44,8 +85,16 @@ class FindFriendsPresenter @Inject constructor(val view: FindFriendsContract.Vie
         }
     }
 
+    private fun setFriendsRequestReceivedMap(friendRequestsReceivedMap: HashMap<String, User?>) {
+        this.friendRequestsReceivedMap.apply {
+            clear()
+            putAll(friendRequestsReceivedMap)
+            view.setFriendsRequestReceivedMap(this)
+        }
+    }
+
     override fun onUserClick(user: User?) {
-        if (isIncludedInMap(friendRequestsSentMap,user)){
+        if (isIncludedInMap(friendRequestsSentMap, user)) {
             dataSource.cancelFriendRequest(user)
             dataSource.addOrRemoveFriendRequest(user?.email!!, REMOVE_FRIEND_REQUEST)
                     .subscribeOn(Schedulers.io())
@@ -63,8 +112,7 @@ class FindFriendsPresenter @Inject constructor(val view: FindFriendsContract.Vie
 
 
     override fun detach() {
-        dataSource.stopFriendRequestsEventsListening()
-        dataSource.stopUserEventsListening()
+        dataSource.stopEventsListening()
         compositeDisposable.clear()
     }
 

@@ -2,10 +2,7 @@ package com.rockwellstudios.mychat.ui.main.di
 
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.rockwellstudios.mychat.common.FIREBASE_PATH_FRIEND_REQUEST_SENT
-import com.rockwellstudios.mychat.common.FIREBASE_PATH_USERS
-import com.rockwellstudios.mychat.common.USER_EMAIL
-import com.rockwellstudios.mychat.common.encodeEmail
+import com.rockwellstudios.mychat.common.*
 import com.rockwellstudios.mychat.ui.main.friends.find.entity.User
 import com.rockwellstudios.mychat.utils.PreferenceDataSource
 import dagger.Module
@@ -25,8 +22,15 @@ class UserDataModule {
 
     @Provides
     @Named(FIREBASE_PATH_FRIEND_REQUEST_SENT)
-    fun provideFirebaseDatabaseFriendRequests (userEmail : String) : DatabaseReference{
+    fun provideFirebaseDatabaseFriendRequestsSent (userEmail : String) : DatabaseReference{
         return FirebaseDatabase.getInstance().reference.child(FIREBASE_PATH_FRIEND_REQUEST_SENT)
+                .child(encodeEmail(userEmail))
+    }
+
+    @Provides
+    @Named(FIREBASE_PATH_FRIEND_REQUEST_RECEIVED)
+    fun provideFirebaseDatabaseFriendRequestsReceived (userEmail : String) : DatabaseReference{
+        return FirebaseDatabase.getInstance().reference.child(FIREBASE_PATH_FRIEND_REQUEST_RECEIVED)
                 .child(encodeEmail(userEmail))
     }
 
@@ -37,5 +41,10 @@ class UserDataModule {
     fun provideUsersEventsPublishSubject() = PublishSubject.create<MutableList<User?>>()
 
     @Provides
-    fun provideFriendsRequestsPublishSubject() = PublishSubject.create<HashMap<String,User>>()
+    @Named(FIREBASE_PATH_FRIEND_REQUEST_SENT)
+    fun provideFriendsRequestsSentPublishSubject() = PublishSubject.create<HashMap<String,User>>()
+
+    @Provides
+    @Named(FIREBASE_PATH_FRIEND_REQUEST_RECEIVED)
+    fun provideFriendsRequestsReceivedPublishSubject() = PublishSubject.create<HashMap<String,User>>()
 }

@@ -8,7 +8,9 @@ interface FriendsDataSource {
 
     fun listenUserEvents() : PublishSubject<MutableList<User?>>
 
-    fun listenFriendsRequestsEvents() : PublishSubject<HashMap<String,User?>>
+    fun listenFriendsRequestsSentEvents() : PublishSubject<HashMap<String,User?>>
+
+    fun listenFriendsRequestsReceivedEvents() : PublishSubject<HashMap<String,User?>>
 
     fun sendFriendRequest(user: User?)
 
@@ -16,8 +18,6 @@ interface FriendsDataSource {
 
     fun addOrRemoveFriendRequest(email: String, requestCode: Int) : Observable<Int>
 
-    fun stopUserEventsListening()
-
-    fun stopFriendRequestsEventsListening()
+    fun stopEventsListening()
 
 }

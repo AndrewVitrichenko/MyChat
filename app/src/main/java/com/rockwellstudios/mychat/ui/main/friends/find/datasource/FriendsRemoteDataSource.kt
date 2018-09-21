@@ -4,6 +4,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.rockwellstudios.mychat.common.FIREBASE_PATH_FRIEND_REQUEST_RECEIVED
 import com.rockwellstudios.mychat.common.FIREBASE_PATH_FRIEND_REQUEST_SENT
 import com.rockwellstudios.mychat.common.FIREBASE_PATH_USERS
 import com.rockwellstudios.mychat.common.encodeEmail
@@ -16,11 +17,16 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class FriendsRemoteDataSource @Inject constructor(@Named(FIREBASE_PATH_USERS) val usersDatabase: DatabaseReference,
-                                                  @Named(FIREBASE_PATH_FRIEND_REQUEST_SENT) val friendsRequestsDatabase: DatabaseReference,
+                                                  @Named(FIREBASE_PATH_FRIEND_REQUEST_SENT) val friendsRequestsSentDatabase: DatabaseReference,
+                                                  @Named(FIREBASE_PATH_FRIEND_REQUEST_RECEIVED) val friendsRequestsReceivedDatabase: DatabaseReference,
                                                   val socketConnector: SocketConnector,
                                                   val currentUserEmail: String,
                                                   val usersPublisher: PublishSubject<MutableList<User?>>,
-                                                  val friendsRequestsPublisher:PublishSubject<HashMap<String,User?>>) : FriendsDataSource {
+                                                  @Named(FIREBASE_PATH_FRIEND_REQUEST_SENT)
+                                                  val friendsRequestsSentPublisher:PublishSubject<HashMap<String,User?>>,
+                                                  @Named(FIREBASE_PATH_FRIEND_REQUEST_RECEIVED)
+                                                  val friendsRequestsReceivedPublisher:PublishSubject<HashMap<String,User?>>) : FriendsDataSource {
+
     override fun addOrRemoveFriendRequest(email: String, requestCode: Int): Observable<Int> {
         return Observable.just(requestCode)
                 .doOnNext {
@@ -44,18 +50,23 @@ class FriendsRemoteDataSource @Inject constructor(@Named(FIREBASE_PATH_USERS) va
         return usersPublisher
     }
 
-    override fun listenFriendsRequestsEvents(): PublishSubject<HashMap<String, User?>> {
-        friendsRequestsDatabase.addValueEventListener(friendsRequestsEventListener)
-        return friendsRequestsPublisher
+    override fun listenFriendsRequestsSentEvents(): PublishSubject<HashMap<String, User?>> {
+        friendsRequestsSentDatabase.addValueEventListener(friendsRequestsSentEventListener)
+        return friendsRequestsSentPublisher
+    }
+
+    override fun listenFriendsRequestsReceivedEvents(): PublishSubject<HashMap<String, User?>> {
+        friendsRequestsReceivedDatabase.addValueEventListener(friendsRequestsReceivedEventListener)
+        return friendsRequestsReceivedPublisher
     }
 
 
     override fun sendFriendRequest(user: User?) {
-        friendsRequestsDatabase.child(encodeEmail(user?.email!!)).setValue(user)
+        friendsRequestsSentDatabase.child(encodeEmail(user?.email!!)).setValue(user)
     }
 
     override fun cancelFriendRequest(user: User?) {
-        friendsRequestsDatabase.child(encodeEmail(user?.email!!)).removeValue()
+        friendsRequestsSentDatabase.child(encodeEmail(user?.email!!)).removeValue()
     }
 
     private var usersEventListener = object : ValueEventListener {
@@ -73,7 +84,7 @@ class FriendsRemoteDataSource @Inject constructor(@Named(FIREBASE_PATH_USERS) va
         }
     }
 
-    private var friendsRequestsEventListener = object : ValueEventListener {
+    private var friendsRequestsSentEventListener = object : ValueEventListener {
 
         override fun onCancelled(p0: DatabaseError) {
 
@@ -85,17 +96,32 @@ class FriendsRemoteDataSource @Inject constructor(@Named(FIREBASE_PATH_USERS) va
                     .onEach { user ->
                         friendsRequestsMap[user?.email!!] = user
                     }
-            friendsRequestsPublisher.onNext(friendsRequestsMap)
+            friendsRequestsSentPublisher.onNext(friendsRequestsMap)
 
         }
     }
 
-    override fun stopUserEventsListening() {
-        usersDatabase.removeEventListener(usersEventListener)
+    private var friendsRequestsReceivedEventListener = object : ValueEventListener {
+
+        override fun onCancelled(p0: DatabaseError) {
+
+        }
+
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            val friendsRequestsMap: HashMap<String, User?> = HashMap()
+            dataSnapshot.children.map { item -> item.getValue(User::class.java) }
+                    .onEach { user ->
+                        friendsRequestsMap[user?.email!!] = user
+                    }
+            friendsRequestsReceivedPublisher.onNext(friendsRequestsMap)
+
+        }
     }
 
-    override fun stopFriendRequestsEventsListening() {
-        friendsRequestsDatabase.removeEventListener(friendsRequestsEventListener)
+    override fun stopEventsListening() {
+        usersDatabase.removeEventListener(usersEventListener)
+        friendsRequestsSentDatabase.removeEventListener(friendsRequestsSentEventListener)
+        friendsRequestsReceivedDatabase.removeEventListener(friendsRequestsReceivedEventListener)
     }
 
 }

@@ -8,7 +8,6 @@ import com.rockwellstudios.mychat.ui.main.MainActivity
 import com.rockwellstudios.mychat.ui.main.friends.FriendsFragment
 import com.rockwellstudios.mychat.ui.main.di.MainModule
 import com.rockwellstudios.mychat.ui.main.di.UserDataModule
-import com.rockwellstudios.mychat.ui.main.di.UserDataModule_ProvideFirebaseDatabaseFriendRequestsFactory
 import com.rockwellstudios.mychat.ui.main.friends.find.FindFriendsFragment
 import com.rockwellstudios.mychat.ui.main.friends.requests.FriendRequestsFragment
 import com.rockwellstudios.mychat.ui.main.friends.user.UserFriendsFragment
