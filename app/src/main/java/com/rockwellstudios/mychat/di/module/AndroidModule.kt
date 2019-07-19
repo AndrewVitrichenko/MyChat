@@ -1,9 +1,11 @@
 package com.rockwellstudios.mychat.di.module
 
 import com.rockwellstudios.mychat.ui.auth.AuthActivity
-import com.rockwellstudios.mychat.ui.auth.di.AuthModule
+import com.rockwellstudios.mychat.ui.auth.data.AuthDataModule
 import com.rockwellstudios.mychat.ui.auth.login.LoginFragment
+import com.rockwellstudios.mychat.ui.auth.login.LoginModule
 import com.rockwellstudios.mychat.ui.auth.registration.RegistrationFragment
+import com.rockwellstudios.mychat.ui.auth.registration.RegistrationModule
 import com.rockwellstudios.mychat.ui.main.MainActivity
 import com.rockwellstudios.mychat.ui.main.friends.FriendsFragment
 import com.rockwellstudios.mychat.ui.main.di.MainModule
@@ -21,13 +23,13 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class AndroidModule {
 
-    @ContributesAndroidInjector(modules = arrayOf(AuthModule::class))
+    @ContributesAndroidInjector()
     abstract fun authActivityInjector(): AuthActivity
 
-    @ContributesAndroidInjector(modules = arrayOf(AuthModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(LoginModule::class,AuthDataModule::class))
     abstract fun loginFragmentInjector(): LoginFragment
 
-    @ContributesAndroidInjector(modules = arrayOf(AuthModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(RegistrationModule::class,AuthDataModule::class))
     abstract fun registrationFragmentInjector(): RegistrationFragment
 
     @ContributesAndroidInjector()
