@@ -22,46 +22,46 @@ class RegistrationPresenter @Inject constructor(val view: RegistrationContract.V
 
 
     override fun attach() {
-        Observables.combineLatest(
-                view.userNameInputStream(),
-                view.emailInputStream(),
-                view.passwordInputStream()
-        ) { userName, email, password -> AuthEntities.AuthBody(userName, email, password, "","") }
-                .sample(view.signUpButtonClick())
-                .doOnNext { view.showLoading(true) }
-                .doOnNext { authBody ->
-                    authBody.apply {
-                        if (userName.trim().isEmpty() || email.trim().isEmpty() || password.trim().isEmpty()) {
-                            view.apply {
-                                showLoading(false)
-                                showMessage(resourceUtil.getString(R.string.error_incorrect_data))
-                            }
-                        }
-                    }
-                }
-                .filter { authBody ->
-                    !authBody.userName.trim().isEmpty() &&
-                            !authBody.email.trim().isEmpty() && !authBody.password.trim().isEmpty()
-                }
-                .observeOn(Schedulers.io())
-                .doOnNext { authBody -> authDataSource.registerUser(authBody) }
-                .doOnSubscribe { compositeDisposable.add(it) }
-                .subscribe()
+//        Observables.combineLatest(
+//                view.userNameInputStream(),
+//                view.emailInputStream(),
+//                view.passwordInputStream()
+//        ) { userName, email, password -> AuthEntities.AuthBody(userName, email, password, "","") }
+//                .sample(view.signUpButtonClick())
+//                .doOnNext { view.showLoading(true) }
+//                .doOnNext { authBody ->
+//                    authBody.apply {
+//                        if (userName.trim().isEmpty() || email.trim().isEmpty() || password.trim().isEmpty()) {
+//                            view.apply {
+//                                showLoading(false)
+//                                showMessage(resourceUtil.getString(R.string.error_incorrect_data))
+//                            }
+//                        }
+//                    }
+//                }
+//                .filter { authBody ->
+//                    !authBody.userName.trim().isEmpty() &&
+//                            !authBody.email.trim().isEmpty() && !authBody.password.trim().isEmpty()
+//                }
+//                .observeOn(Schedulers.io())
+//                .doOnNext { authBody -> authDataSource.registerUser(authBody) }
+//                .doOnSubscribe { compositeDisposable.add(it) }
+//                .subscribe()
+//
+//        authSubject.subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .doOnSubscribe { compositeDisposable.add(it) }
+//                .doOnNext { view.showLoading(false) }
+//                .subscribe { message ->
+//                    if (message is String) {
+//                        when (message) {
+//                            "Success" -> view.moveToLogin()
+//                            else -> view.showMessage(message)
+//                        }
+//                    }
+//                }
 
-        authSubject.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { compositeDisposable.add(it) }
-                .doOnNext { view.showLoading(false) }
-                .subscribe { message ->
-                    if (message is String) {
-                        when (message) {
-                            "Success" -> view.moveToLogin()
-                            else -> view.showMessage(message)
-                        }
-                    }
-                }
-
-        authDataSource.listenEvents()
+//        authDataSource.listenEvents()
     }
 
     override fun detach() {

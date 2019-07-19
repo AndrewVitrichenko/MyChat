@@ -1,12 +1,10 @@
 package com.rockwellstudios.mychat.di.module
 
-import com.rockwellstudios.mychat.ui.auth.AuthActivity
-import com.rockwellstudios.mychat.ui.auth.data.AuthDataModule
+import com.rockwellstudios.mychat.ui.auth.di.AuthDataModule
 import com.rockwellstudios.mychat.ui.auth.login.LoginFragment
 import com.rockwellstudios.mychat.ui.auth.login.LoginModule
 import com.rockwellstudios.mychat.ui.auth.registration.RegistrationFragment
 import com.rockwellstudios.mychat.ui.auth.registration.RegistrationModule
-import com.rockwellstudios.mychat.ui.main.MainActivity
 import com.rockwellstudios.mychat.ui.main.friends.FriendsFragment
 import com.rockwellstudios.mychat.ui.main.di.MainModule
 import com.rockwellstudios.mychat.ui.main.friends.find.FindFriendsFragment
@@ -21,19 +19,13 @@ import dagger.android.ContributesAndroidInjector
  * Created by user on 23.03.18.
  */
 @Module
-abstract class AndroidModule {
+abstract class FragmentBindingModule {
 
-    @ContributesAndroidInjector()
-    abstract fun authActivityInjector(): AuthActivity
-
-    @ContributesAndroidInjector(modules = arrayOf(LoginModule::class,AuthDataModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(LoginModule::class, AuthDataModule::class))
     abstract fun loginFragmentInjector(): LoginFragment
 
-    @ContributesAndroidInjector(modules = arrayOf(RegistrationModule::class,AuthDataModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(RegistrationModule::class, AuthDataModule::class))
     abstract fun registrationFragmentInjector(): RegistrationFragment
-
-    @ContributesAndroidInjector()
-    abstract fun mainActivityInjector(): MainActivity
 
     @ContributesAndroidInjector(modules = arrayOf(MainModule::class))
     abstract fun inboxFragmentInjector(): InboxFragment

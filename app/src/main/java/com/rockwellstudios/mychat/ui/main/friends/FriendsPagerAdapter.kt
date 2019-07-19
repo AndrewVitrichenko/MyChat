@@ -1,22 +1,22 @@
 package com.rockwellstudios.mychat.ui.main.friends
 
 import android.content.Context
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
 import com.rockwellstudios.mychat.R
 import com.rockwellstudios.mychat.base.BaseFragment
 import com.rockwellstudios.mychat.ui.main.friends.find.FindFriendsFragment
 import com.rockwellstudios.mychat.ui.main.friends.requests.FriendRequestsFragment
 import com.rockwellstudios.mychat.ui.main.friends.user.UserFriendsFragment
 
-class FriendsPagerAdapter constructor(fm : FragmentManager,
-                                      private val context: Context?): FragmentStatePagerAdapter(fm) {
+class FriendsPagerAdapter constructor(fm : androidx.fragment.app.FragmentManager,
+                                      private val context: Context?): androidx.fragment.app.FragmentStatePagerAdapter(fm) {
 
     private val ITEM_COUNT = 3
 
-    override fun getItem(position: Int): Fragment? {
-        var fragment: Fragment? = null
+    override fun getItem(position: Int): androidx.fragment.app.Fragment? {
+        var fragment: androidx.fragment.app.Fragment? = null
         when (position) {
             0 -> fragment = UserFriendsFragment.newInstance()
             1 -> fragment = FriendRequestsFragment.newInstance()

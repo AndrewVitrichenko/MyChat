@@ -1,6 +1,6 @@
 package com.rockwellstudios.mychat.base
 
-import android.support.design.widget.BottomNavigationView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 abstract class BaseBottomBarActivity : BaseActivity(),BaseBottomBarView {
 

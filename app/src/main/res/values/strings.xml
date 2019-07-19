@@ -11,4 +11,6 @@
     <string name="title_profile">Profile</string>
     <string name="title_friends_requests">Requests</string>
     <string name="title_find_friends">Find friends</string>
+
+    <string name="common_error">Something went wrong, please try again</string>
 </resources>

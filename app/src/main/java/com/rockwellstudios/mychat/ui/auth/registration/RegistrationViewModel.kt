@@ -1,6 +1,6 @@
 package com.rockwellstudios.mychat.ui.auth.registration
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.rockwellstudios.mychat.ui.auth.data.AuthDataSource
 import javax.inject.Inject
 
