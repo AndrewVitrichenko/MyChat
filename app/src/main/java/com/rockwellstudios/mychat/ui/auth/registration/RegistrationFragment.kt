@@ -2,18 +2,39 @@ package com.rockwellstudios.mychat.ui.auth.registration
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.rockwellstudios.mychat.R
 import com.rockwellstudios.mychat.base.BaseAuthFragment
+import com.rockwellstudios.mychat.common.Status
+import com.rockwellstudios.mychat.ui.auth.entities.UserState
 import kotlinx.android.synthetic.main.layout_auth.*
 import javax.inject.Inject
 
 /**
  * Created by user on 23.03.18.
  */
-class RegistrationFragment : BaseAuthFragment(), RegistrationContract.View {
+class RegistrationFragment : BaseAuthFragment() {
 
     @Inject
-    lateinit var presenter: RegistrationContract.Presenter
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private lateinit var registrationViewModel: RegistrationViewModel
+
+    private val registrationStateObserver = Observer<UserState> { userState ->
+        when(userState.status){
+            Status.SUCCESS -> {
+                showLoading(false)
+                moveToLogin()
+            }
+            Status.ERROR -> {
+                showLoading(false)
+                showMessage(userState.message!!)
+            }
+            Status.LOADING -> showLoading(true)
+        }
+    }
 
     companion object {
         fun newInstance() = RegistrationFragment()
@@ -25,17 +46,23 @@ class RegistrationFragment : BaseAuthFragment(), RegistrationContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        registrationViewModel = ViewModelProviders.of(this,viewModelFactory).get(RegistrationViewModel::class.java)
+        registrationViewModel.getRegistrationState().observe(viewLifecycleOwner,registrationStateObserver)
+        btnSignUp.setOnClickListener {
+            registrationViewModel.onRegistrationButtonClicked(editTextUserName.text.toString(),
+                    editTextEmail.text.toString(),editTextPassword.text.toString())
+        }
         btnSignIn.visibility = View.GONE
-        presenter.attach()
     }
 
-    override fun moveToLogin() {
+    private fun moveToLogin() {
         activity?.onBackPressed()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        presenter.detach()
+        btnSignUp.setOnClickListener(null)
+        registrationViewModel.getRegistrationState().removeObserver(registrationStateObserver)
     }
 
 }

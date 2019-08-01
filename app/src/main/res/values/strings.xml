@@ -13,4 +13,6 @@
     <string name="title_find_friends">Find friends</string>
     <string name="title_friend_request_send">Friend request send!</string>
     <string name="title_user_requested_you">This user requested you</string>
+
+    <string name="common_error">Something went wrong, please try again</string>
 </resources>

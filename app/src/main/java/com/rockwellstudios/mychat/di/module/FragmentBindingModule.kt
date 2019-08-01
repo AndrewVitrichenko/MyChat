@@ -1,10 +1,10 @@
 package com.rockwellstudios.mychat.di.module
 
-import com.rockwellstudios.mychat.ui.auth.AuthActivity
-import com.rockwellstudios.mychat.ui.auth.di.AuthModule
+import com.rockwellstudios.mychat.ui.auth.di.AuthDataModule
 import com.rockwellstudios.mychat.ui.auth.login.LoginFragment
+import com.rockwellstudios.mychat.ui.auth.login.LoginModule
 import com.rockwellstudios.mychat.ui.auth.registration.RegistrationFragment
-import com.rockwellstudios.mychat.ui.main.MainActivity
+import com.rockwellstudios.mychat.ui.auth.registration.RegistrationModule
 import com.rockwellstudios.mychat.ui.main.friends.FriendsFragment
 import com.rockwellstudios.mychat.ui.main.di.MainModule
 import com.rockwellstudios.mychat.ui.main.di.UserDataModule
@@ -20,36 +20,30 @@ import dagger.android.ContributesAndroidInjector
  * Created by user on 23.03.18.
  */
 @Module
-abstract class AndroidModule {
+abstract class FragmentBindingModule {
 
-    @ContributesAndroidInjector(modules = arrayOf(AuthModule::class))
-    abstract fun authActivityInjector(): AuthActivity
-
-    @ContributesAndroidInjector(modules = arrayOf(AuthModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(LoginModule::class))
     abstract fun loginFragmentInjector(): LoginFragment
 
-    @ContributesAndroidInjector(modules = arrayOf(AuthModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(RegistrationModule::class))
     abstract fun registrationFragmentInjector(): RegistrationFragment
 
-    @ContributesAndroidInjector()
-    abstract fun mainActivityInjector(): MainActivity
-
-    @ContributesAndroidInjector(modules = arrayOf(MainModule::class, UserDataModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(MainModule::class))
     abstract fun inboxFragmentInjector(): InboxFragment
 
-    @ContributesAndroidInjector(modules = arrayOf(MainModule::class, UserDataModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(MainModule::class))
     abstract fun friendsFragmentInjector(): FriendsFragment
 
-    @ContributesAndroidInjector(modules = arrayOf(MainModule::class, UserDataModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(MainModule::class))
     abstract fun userFriendsFragmentInjector(): UserFriendsFragment
 
-    @ContributesAndroidInjector(modules = arrayOf(MainModule::class, UserDataModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(MainModule::class))
     abstract fun friendsRequestsFragmentInjector(): FriendRequestsFragment
 
-    @ContributesAndroidInjector(modules = arrayOf(MainModule::class, UserDataModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(UserDataModule::class,MainModule::class))
     abstract fun findFriendsFragmentInjector(): FindFriendsFragment
 
-    @ContributesAndroidInjector(modules = arrayOf(MainModule::class, UserDataModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(MainModule::class))
     abstract fun profileFragmentInjector(): ProfileFragment
 
 }

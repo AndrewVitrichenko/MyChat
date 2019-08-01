@@ -2,7 +2,7 @@ package com.rockwellstudios.mychat.ui.main
 
 import android.os.Bundle
 import com.rockwellstudios.mychat.R
-import android.support.design.widget.BottomNavigationView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rockwellstudios.mychat.base.BaseBottomBarActivity
 import com.rockwellstudios.mychat.ui.main.friends.FriendsFragment
 import com.rockwellstudios.mychat.ui.main.inbox.InboxFragment
@@ -23,7 +23,7 @@ class MainActivity : BaseBottomBarActivity(){
         showFragment(InboxFragment.newInstance(),true)
     }
 
-    override fun getBottomBar(): BottomNavigationView  = bottomNavigation
+    override fun getBottomBar(): BottomNavigationView = bottomNavigation
 
     override fun getFragmentContainer(): Int = R.id.activity_main_fragment_container
 

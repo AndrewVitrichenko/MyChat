@@ -2,17 +2,14 @@ package com.rockwellstudios.mychat.ui.auth.data
 
 import com.google.firebase.auth.FirebaseAuth
 import com.rockwellstudios.mychat.entity.AuthEntities
+import com.rockwellstudios.mychat.ui.auth.entities.UserState
 import com.rockwellstudios.mychat.utils.SocketConnector
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
-import io.socket.emitter.Emitter
 import org.json.JSONObject
 import javax.inject.Inject
 
-class AuthRemoteDataSource @Inject constructor(val socketConnector: SocketConnector,
-                                               val authSubject: PublishSubject<Any>) : AuthDataSource {
+class AuthRemoteDataSource @Inject constructor(val socketConnector: SocketConnector) : AuthDataSource {
 
-    override fun registerUser(authBody: AuthEntities.AuthBody) {
+    override fun registerUser(authBody: AuthEntities.AuthBody,callback: (e: UserState) -> Unit) {
         try {
             val jsonObject = JSONObject()
             jsonObject.apply {
@@ -22,38 +19,41 @@ class AuthRemoteDataSource @Inject constructor(val socketConnector: SocketConnec
                 socketConnector.initConnection()?.emit("userData", jsonObject)
             }
         } catch (e: Exception) {
+            callback.invoke(UserState.error(e.message.toString()))
         }
     }
 
-    override fun login(authBody: AuthEntities.AuthBody) : Observable<AuthEntities.AuthBody> {
-        return Observable.just(authBody)
-                .doOnNext{ authBody ->  FirebaseAuth.getInstance().signInWithEmailAndPassword(authBody.email, authBody.password)
-                        .addOnCompleteListener { task ->
-                            if (!task.isSuccessful) {
-                                authSubject.onNext(task.exception?.message.toString())
-                            } else {
-                                try {
-                                    val jsonObject = JSONObject()
-                                    jsonObject.put("email", authBody.email)
-                                    socketConnector.initConnection()?.emit("userInfo", jsonObject)
-                                } catch (e: Exception) {
-                                    authSubject.onNext(e.message.toString())
-                                }
-                            }
+    override fun login(authBody: AuthEntities.AuthBody, callback: (e: UserState) -> Unit) {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(authBody.email, authBody.password)
+                .addOnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        callback.invoke(UserState.error(task.exception?.message.toString()))
+                    } else {
+                        try {
+                            val jsonObject = JSONObject()
+                            jsonObject.put("email", authBody.email)
+                            socketConnector.initConnection()?.emit("userInfo", jsonObject)
+                        } catch (e: Exception) {
+                            callback.invoke(UserState.error(e.message.toString()))
                         }
+                    }
                 }
     }
 
 
-    override fun listenEvents() {
+    override fun listenEvents(callback: (e: UserState) -> Unit) {
         socketConnector.initConnection()?.on("message") { args ->
             val jsonObject: JSONObject = args[0] as JSONObject
             try {
                 val messageObject: JSONObject = jsonObject.getJSONObject("message")
                 val message: String = messageObject.get("text") as String
-                authSubject.onNext(message)
+                if (message == "Success") {
+                    callback.invoke(UserState.success(message))
+                } else{
+                    callback.invoke(UserState.error(message))
+                }
             } catch (e: Exception) {
-                authSubject.onNext(e.message.toString())
+                callback.invoke(UserState.error(e.message.toString()))
             }
         }
         socketConnector.initConnection()?.on("token") { args ->
@@ -64,21 +64,21 @@ class AuthRemoteDataSource @Inject constructor(val socketConnector: SocketConnec
                 val email: String = messageObject.get("email") as String
                 val userPicture: String = messageObject.get("userPicture") as String
                 val userName: String = messageObject.get("userName") as String
-                val authBody = AuthEntities.AuthBody(userName,email,"",userPicture,token)
-                if (email != "error"){
+                val authBody = AuthEntities.AuthBody(userName, email, "", userPicture, token)
+                if (email != "error") {
                     FirebaseAuth.getInstance().signInWithCustomToken(token)
                             .addOnCompleteListener { task ->
-                                if (!task.isSuccessful){
-                                    authSubject.onNext(task.exception?.message.toString())
-                                } else{
-                                    authSubject.onNext(authBody)
+                                if (!task.isSuccessful) {
+                                    callback.invoke(UserState.error(task.exception?.message.toString()))
+                                } else {
+                                    callback.invoke(UserState.success(authBody))
                                 }
                             }
-                } else{
-                    authSubject.onNext(token)
+                } else {
+                    callback.invoke(UserState.error(token))
                 }
             } catch (e: Exception) {
-                authSubject.onNext(e.message.toString())
+                callback.invoke(UserState.error(e.message.toString()))
             }
         }
     }
