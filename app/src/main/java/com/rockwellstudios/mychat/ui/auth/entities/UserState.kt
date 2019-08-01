@@ -9,5 +9,6 @@ data class UserState(var status: Int, var message: String?, var  authBody: AuthE
         fun loading(): UserState = UserState(Status.LOADING, null, null)
         fun error(message: String): UserState = UserState(Status.ERROR, message, null)
         fun success(authBody: AuthEntities.AuthBody): UserState = UserState(Status.SUCCESS, null, authBody)
+        fun success(message: String): UserState = UserState(Status.SUCCESS, message, null)
     }
 }

@@ -45,7 +45,11 @@ class AuthRemoteDataSource @Inject constructor(val socketConnector: SocketConnec
             try {
                 val messageObject: JSONObject = jsonObject.getJSONObject("message")
                 val message: String = messageObject.get("text") as String
-                callback.invoke(UserState.error(message))
+                if (message == "Success") {
+                    callback.invoke(UserState.success(message))
+                } else{
+                    callback.invoke(UserState.error(message))
+                }
             } catch (e: Exception) {
                 callback.invoke(UserState.error(e.message.toString()))
             }
